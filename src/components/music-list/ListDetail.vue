@@ -93,7 +93,7 @@ export default {
             getRecommendListDetail (id).then((res=>{
                 this.playlist = res.data.playlist
                 this.creator = res.data.playlist.creator
-                console.log(res.data.playlist.tracks)
+                console.log(res.data)
                 this.MusicList(res.data.playlist.tracks)
             }))
         },

@@ -4,6 +4,7 @@
         <!-- 轮播图 -->
         <van-swipe :autoplay="3000" class="banner">
             <van-swipe-item v-for="(image, index) in banner" :key="index" class="img">
+                <div class="cover"></div>
                 <img v-lazy="image.imageUrl" /><span class="img-title" :style="{background:image.titleColor}">{{image.typeTitle}}</span>
             </van-swipe-item>
         </van-swipe>
@@ -194,7 +195,6 @@ export default {
 $con:"06";
 .recommend{
     width: 100%;
-    height: 27rem;
     margin-top: 1.75rem;
     margin-bottom: 1rem;
     background: #fff;
@@ -313,6 +313,7 @@ $con:"06";
     width: 100%;
     height: 3rem;
     background: #fff;
+    position: relative;
     .img{
         &-title{
             opacity: 0.8;
@@ -324,12 +325,19 @@ $con:"06";
             border-radius: 0.15rem 0 0.15rem 0;
             bottom: 0.1rem;
             right: 0.15rem;
+            
         }
+        .cover{
+                position: absolute;
+                height: 2rem;
+                width: 100%;
+                background: $color-theme;
+                z-index: -1;
+            }
         height: 2.5rem;
-        background: $color-theme;
+        position: relative;
     }
     img{
-        position: relative;
         margin: 0.1rem;
         width: 95%;
         margin-right: 0.1rem;

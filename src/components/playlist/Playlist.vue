@@ -2,7 +2,7 @@
         <ul class="song-list">
         <li>
             <div class="name">   
-                <p>列表循环({{musicList.length}})</p>
+                <p>列表循环({{musicList.length!=""?musicList.length:0}})</p>
             </div>
             <div class="operation">
                 <p>收藏全部</p>

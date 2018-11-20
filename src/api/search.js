@@ -4,7 +4,7 @@ export function getSearch(){
     const url = HOST+ '/search/hot'
     return axios(url)
 }
-export function getSearchResult(keywords){
-    const url = HOST + `/search?keywords= ${keywords}`
+export function getSearchResult(keywords,page){
+    const url = HOST + `/search?keywords= ${keywords}&offset=${page}`
     return axios(url)
 }

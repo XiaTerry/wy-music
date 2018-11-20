@@ -7,9 +7,9 @@
                 <p>
                 {{songName}}
                 </p>
-                <p>
+                <!-- <p>
                     横滑可以切换上下首哦
-                </p>
+                </p> -->
                 <audio  ref="musicAudio" :src="musicSrc" autoplay="autoplay"></audio>
             </div>
         </div>
@@ -61,7 +61,6 @@ export default {
             }
         },
         toPlayer(){
-            console.log(123)
             this.$router.push({
                 path:'/player'
             })

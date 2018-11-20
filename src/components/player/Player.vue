@@ -67,7 +67,6 @@ export default {
             isPlay:false,
             isStop:true,
             picUrl:"",
-            // id:this.$route.params.id,
             audio:null,
             duration:0,
             currentTime:0,
@@ -79,15 +78,13 @@ export default {
     },
     watch:{
         currentTime () {
-            // this. = this.currentTime / this.duration
+            
         }
     },
     mounted(){
         this.$root.$children[0].isShow = false
         this.audio = this.$root.$children[0].$refs.player.$refs.musicAudio
-        // console.log(this)
         this.currentTime = this.audio.currentTime
-        // this.setCurretnId(this.$route.params.id)
         
     },
     beforeDestroy(){
@@ -111,22 +108,20 @@ export default {
     },
     methods:{
         _getSongDetail(){
-            // let id = this.id
+           
             getSongDetail(this.currentSongId).then((res=>{
-                // this.picUrl = res.data.songs[0].al.picUrl
                 this.getImgSrc(res.data.songs[0].al.picUrl)
                 this.getSongName(res.data.songs[0].name)
                 this.getSinger(res.data.songs[0].ar[0].name)
             }))
         },
         _getSong(){
-            // let id = this.id
             getSong(this.currentSongId).then((res=>{
                this.getSongUrl(res.data.data[0].url)
             }))
         },
         getTime(){
-            // console.log(this.$refs.porgress.style)
+            
         },
         popup(){
             if(this.show==false){
@@ -137,13 +132,12 @@ export default {
         },
         //点击播放和暂停
         player(){
-            // console.log(e)
+            
             if(this.isStop == false){
                 this.isStop = true
                 this.isPlay = false
                 this.$refs.disc.className="one rotate"
                 this.audio.play()
-                // console.log(duration)
             }else{
                 this.isStop = false
                 this.isPlay = true
@@ -161,7 +155,6 @@ export default {
                 index = this.musicList.length
             }
             this.selectPlay(index)
-            // this.id = this.musicList[index].id
             this.setCurrentId(this.musicList[index].id)
             this._getSongDetail()
             this._getSong()
@@ -175,7 +168,6 @@ export default {
                 index = 0
             }
             this.selectPlay(index)
-            // this.id = this.musicList[index].id
             this.setCurrentId(this.musicList[index].id)
             this._getSongDetail()
             this._getSong()
@@ -207,7 +199,6 @@ export default {
                 return
             }
             this.currentTime = e.target.currentTime
-            // let min = 
             let min = Math.floor(this.duration/60)
             let sec = Math.floor(this.duration%60)
             let sum = min*60 + sec
