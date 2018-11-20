@@ -75,10 +75,8 @@ export default {
     created(){
         this._getRecommendListDetail()
         this.getMusicList(this.playlist)
-        // console.log(this.currentSongId)
     },
     mounted(){
-        // console.log(this.MusicList)
         this.MusicList()
     },
     computed:{
@@ -93,7 +91,6 @@ export default {
             getRecommendListDetail (id).then((res=>{
                 this.playlist = res.data.playlist
                 this.creator = res.data.playlist.creator
-                console.log(res.data)
                 this.MusicList(res.data.playlist.tracks)
             }))
         },

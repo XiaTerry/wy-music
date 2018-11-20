@@ -6,14 +6,14 @@
         </div>
         <ul class="rank-content">
             <!--  v-for="(item,index) in rankList" :key="index" v-lazy="item.playlist.coverImgUrl"-->
-            <li class="list" v-for="(item,index) in rankList" :key="index">
+            <li class="list" @click="selectSong(item.id)" v-for="(item,index) in rankList" :key="index">
                 <div class="list-left">
-                    <img v-lazy="item.playlist.coverImgUrl">
+                    <img v-lazy="item.coverImgUrl">
                 </div>
                 <div class="list-right">
                     <ul>
-                        <li class="name" v-for="(item,index) in rankTracks[index]" :key="item.id">
-                            {{index+1}}.{{item.name}}-{{item.ar[0].name}}
+                        <li class="name" v-for="(item,index) in item.tracks" :key="item.id">
+                            {{index+1}}.{{item.first}}
                         </li>
                     </ul>
                 </div>
@@ -26,7 +26,7 @@
 <script>
 
 import { HOST, ERR_OK } from '../../common/js/config.js';
-import {getRankingtList} from '../../api/rankingList.js'
+import {getRankDetail} from '../../api/rankingList.js'
 import PlayerBar from "../player/PlayerBar.vue";
 import NavBar from "../v-header/NavBar.vue";
 export default {
@@ -41,26 +41,22 @@ export default {
         }
     },
     mounted(){
-        this._getRankingtList()
-        
+        this._getRankDetail()
     },
     methods:{
-        _getRankingtList(){
-            let rank = new Array();
-            let tracks = new Array();
-            this.rankList = rank;
-            this.rankTracks = tracks;
-            // console.log(rank)
-            for(let i=0;i<=23;i++){
-                getRankingtList(i).then((res=>{
-                    if(res.status === ERR_OK){
-                        rank.push(res.data)
-                        tracks.push(res.data.playlist.tracks.slice(0,3))
-                    }else{
-                        console.error('Banner 获取失败')
-                    }
-                }))
-            }
+        selectSong(id){
+            this.$router.push({
+                path:`/listDetail/${id}`,
+            })
+        },
+        _getRankDetail(){
+            getRankDetail().then((res=>{
+                if(res.status === ERR_OK){
+                    this.rankList = res.data.list
+                }else{
+                    console.error('获取失败！')
+                }
+            }))
         },
         getWorldSong(){
             
