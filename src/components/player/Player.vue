@@ -1,18 +1,19 @@
 <template>
-    <div id="player">
-        <PlayerHeader :getName="name" :getArName="arName"></PlayerHeader>
-        {{nowIndex}}<button @click="selectPlay">加1</button>
-        <audio  ref="musicAudio" :src="musicSrc"  class="audio-ctrl"></audio>
-        <div class="disc">
-            <div class="one">
+    <div id="player" >
+        <PlayerHeader></PlayerHeader>
+        <!-- <audio  ref="musicAudio" :src="musicSrc" autoplay="autoplay" class="audio-ctrl" @timeupdate="updateTime"></audio> -->
+        <div class="disc" >
+           <transition>
+            <div class="one rotate" ref="disc">
                 <div class="two">
                     <div class="three">
                         <div class="four">
-                            <img v-lazy="picUrl">
+                            <img :src="imgSrc">
                         </div>
                     </div>
                 </div>
             </div>
+            </transition>
         </div>
         <div class="player-bar">
             <van-row class="palyer-msg" type="flex" justify="center">
@@ -22,90 +23,106 @@
                 <van-col span="5"><i class="iconfont icon-sandian"></i></van-col>
             </van-row>
             <div class="progress-bar">
-                <span class="progress-time">02:16</span>
+                <span class="progress-time">{{format(currentTime)}}</span>
                 <div class="progress-center">
                      <div class="progress">
-                        <span class="progress-l" ref="porgress">
+                        <span class="progress-l" :style="'width:'+ num * 1 +'%;'">
                             <span class="pivot" @click="getTime()"><span></span></span>
                         </span>
                     </div>
                 </div>
-                <span class="progress-sumtime">03:06</span>
+                <span class="progress-sumtime">{{format(duration)}}</span>
             </div>
             <van-row class="palyer-type" type="flex" justify="center">
                 <van-col span="5"><i class="iconfont icon-liebiaoxunhuan1"></i></van-col>
                 <van-col span="5"><i @click="prev" class="iconfont icon-shangyiqu"></i></van-col>
                 <van-col span="5">
-                    <i  @click="play()" class="iconfont icon-bofang1" v-show="isPlay"></i>
-                    <i @click="pause()" class="iconfont icon-bofang" v-show="!isPlay"></i>
+                    <i  @click="player" class="iconfont icon-play" v-show="isPlay"></i>
+                    <i @click="player" class="iconfont icon-stop" v-show="isStop"></i>
                 </van-col>
-                <van-col span="5"><i class="iconfont icon-xiayiqu"></i></van-col>
+                <van-col span="5"><i @click="next()"  class="iconfont icon-xiayiqu"></i></van-col>
                 <van-col span="5" ><i @click="popup()" class="iconfont icon-caidan"></i></van-col>
             </van-row>
         </div>
         <van-popup v-model="show" position="bottom">
-            <ul class="song-list">
-                <li>4</li>
-                <li>4</li>
-                <li>4</li>
-                <li>4</li>
-                <li>4</li>
-                <li>4</li>
-                <li>4</li>
-                <li>4</li>
-                <li>4</li>
-            </ul>
+            <PlayList></PlayList>
         </van-popup>
     </div>
 </template>
 
 <script>
-import { HOST, ERR_OK } from '../../common/js/config.js';
+import { HOST, ERR_OK } from '../../common/js/config.js'
+import PlayList from '../playlist/Playlist.vue'
 import {getSongDetail,getSong} from '../../api/player.js'
 import {mapGetters, mapMutations, mapActions} from 'vuex'
 import PlayerHeader from './PlayerHeader.vue'
 export default {
     components:{
-        PlayerHeader
+        PlayerHeader,
+        PlayList
     },
     data () {
         return {
-            nowId:this.$route.params.id,
-            name:'',
-            arName:'',
             show: false,
-            musicSrc:"",
-            isPlay:true,
-            picUrl:""
+            isPlay:false,
+            isStop:true,
+            picUrl:"",
+            // id:this.$route.params.id,
+            audio:null,
+            duration:0,
+            currentTime:0,
+            min:'0',
+            sec:0,
+            num:0,
+            
+        }
+    },
+    watch:{
+        currentTime () {
+            // this. = this.currentTime / this.duration
         }
     },
     mounted(){
-        // commit('setCurrentIndex')
-        console.log(this.$store._actions.selectPlay)
+        this.$root.$children[0].isShow = false
+        this.audio = this.$root.$children[0].$refs.player.$refs.musicAudio
+        // console.log(this)
+        this.currentTime = this.audio.currentTime
+        // this.setCurretnId(this.$route.params.id)
+        
+    },
+    beforeDestroy(){
+        this.$root.$children[0].isShow = true
+        this.duration = this.audio.duration
     },
     created(){
         this._getSongDetail()
         this._getSong()
+        
+        
     },
     computed:{
         ...mapGetters([
         'nowIndex',
+        'musicList',
+        'currentSongId',
+        'musicSrc',
+        'imgSrc'
     ])
     },
     methods:{
         _getSongDetail(){
-            let id = this.nowId
-            getSongDetail(id).then((res=>{
-                console.log(res.data.songs[0])
-                this.picUrl = res.data.songs[0].al.picUrl
-                this.name = res.data.songs[0].name
-                this.arName = res.data.songs[0].ar[0].name
+            // let id = this.id
+            getSongDetail(this.currentSongId).then((res=>{
+                // this.picUrl = res.data.songs[0].al.picUrl
+                this.getImgSrc(res.data.songs[0].al.picUrl)
+                this.getSongName(res.data.songs[0].name)
+                this.getSinger(res.data.songs[0].ar[0].name)
             }))
         },
         _getSong(){
-            let id = this.nowId
-            getSong(id).then((res=>{
-                this.musicSrc = res.data.data[0].url
+            // let id = this.id
+            getSong(this.currentSongId).then((res=>{
+               this.getSongUrl(res.data.data[0].url)
             }))
         },
         getTime(){
@@ -118,60 +135,125 @@ export default {
                 this.show=false
             }
         },
-        //点击播放
-        play(){
-            this.$refs.musicAudio.play();
-            this.isPlay = false
-        },
-        //点击暂停
-        pause(){
-            this.$refs.musicAudio.pause();
-            this.isPlay = true
+        //点击播放和暂停
+        player(){
+            // console.log(e)
+            if(this.isStop == false){
+                this.isStop = true
+                this.isPlay = false
+                this.$refs.disc.className="one rotate"
+                this.audio.play()
+                // console.log(duration)
+            }else{
+                this.isStop = false
+                this.isPlay = true
+                this.audio.pause()
+                this.$refs.disc.className="one"
+            }
+            
         },
         //点击上一曲
         prev(){
-
+            this.duration = this.audio.duration
+            this.currentTime = this.audio.currentTime
+            let index = this.nowIndex-1
+            if(this.nowIndex==0){
+                index = this.musicList.length
+            }
+            this.selectPlay(index)
+            // this.id = this.musicList[index].id
+            this.setCurrentId(this.musicList[index].id)
+            this._getSongDetail()
+            this._getSong()
+        },
+        //点击下一曲
+        next(){
+            this.duration = this.audio.duration
+            this.currentTime = this.audio.currentTime
+            let index = this.nowIndex+1
+            if(index==this.musicList.length){
+                index = 0
+            }
+            this.selectPlay(index)
+            // this.id = this.musicList[index].id
+            this.setCurrentId(this.musicList[index].id)
+            this._getSongDetail()
+            this._getSong()
+            
         },
         ...mapMutations({
             setCurrentIndex: 'SET_CURRENT_INDEX',
+            setCurrentId:'setCurrentId',
+            getSongName:'getSongName',
+            getSinger:'getSinger',
+            getSongUrl:'getSongUrl',
+            getImgSrc:'getImgSrc'
         }),
         ...mapActions([
+        'getMusicList',
         'selectPlay',
-        'deleteFavoriteList',
-        'savePlayHistory'
-    ])
+        ]),
+        format (interval) {
+            interval = interval | 0
+            let minute = interval / 60 | 0
+            let second = interval % 60
+            if (second < 10) {
+                second = '0' + second
+            }
+            return minute + ':' + second
+        },
+        updateTime (e) {
+            if (this.move) {
+                return
+            }
+            this.currentTime = e.target.currentTime
+            // let min = 
+            let min = Math.floor(this.duration/60)
+            let sec = Math.floor(this.duration%60)
+            let sum = min*60 + sec
+            // console.log(sum)
+            
+        },
     }
 }
 </script>
 
 <style lang="scss" scoped>
+    @keyframes rotate-disk {
+        0%{
+            transform: rotateZ(0deg)
+        }
+        100%{
+            transform: rotateZ(360deg)
+        }
+    }
     #player{
         margin-top: 1rem;
         width: 100%;
-        height: 100%;
+        height: 10rem;
         .disc{
             width: 100%;
-            height: 7.2rem;
-            background: rgba(0,0,0,0.4);
+            height: 71%;
+            background: rgba(0,0,0,0.3);
             position: relative;
+            .rotate{
+                animation: rotate-disk 20s infinite normal linear; 
+            }
             .one{
-                // transform-origin: 4rem;
-                transform: rotateZ(360deg);
-                transition: all  ease-in-out; 
                 margin: auto;
-                width: 4.5rem;
-                height: 4.5rem;
+                width: 4rem;
+                height: 4rem;
                 border-radius: 50%;
                 background: #000;
                 border:4px solid #333;
                 position: absolute;
                 left: 50%;
                 top: 50%;
-                margin-left: -2.25rem;
-                margin-top: -2.25rem;
+                margin-left: -2rem;
+                margin-top: -2rem;
                 .two{
-                    height: 4rem;
-                    width: 4rem;
+                    height: 3.5rem;
+                    width: 3.5rem;
                     background: #000;
                     border:1px solid #eee;
                     position:absolute;
@@ -179,8 +261,8 @@ export default {
                     margin-top: 0.25rem;
                     margin-left: 0.25rem;
                     .three{
-                        height: 3.5rem;
-                        width: 3.5rem;
+                        height: 3rem;
+                        width: 3rem;
                         background: #000;
                         border:1px solid #eee;
                         position:absolute;
@@ -188,15 +270,16 @@ export default {
                         margin-top: 0.25rem;
                         margin-left: 0.25rem;
                         .four{
-                            height: 3rem;
-                            width: 3rem;
+                            height: 2.5rem;
+                            width: 2.5rem;
                             background: green;
                             position:absolute;
                             border-radius: 50%;
                             margin-top: 0.25rem;
                             margin-left: 0.25rem;
                             img{
-                                height: 3rem;
+                                height: 2.5rem;
+                                width: 2.5rem;
                                 border-radius: 50%;
                             }
                         }
@@ -205,12 +288,11 @@ export default {
             }
         }
         .player-bar{
-            height: 3.2rem;
             position:fixed;
             left: 0;
             right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.4);
+            margin-bottom: 0;
+            background: rgba(0,0,0,0.3);
             .palyer-msg{
                 height: 1.5rem;
             }
@@ -234,7 +316,7 @@ export default {
                         background: #ffe;
                         .progress-l{
                             position: absolute;
-                            width: 170px;
+                            // width: 170px;
                             left: 0;
                             height: 100%;
                             border-radius: inherit;
@@ -271,17 +353,16 @@ export default {
             }
             .palyer-type{
                 height: 1.5rem;
-                .icon-bofang1,
+                .icon-stop,
                 {
                     font-size: 0.8rem;
                 }
-                .icon-bofang{
-                    font-size: 0.7rem;
+                .icon-play{
+                    font-size: 0.8rem;
                 }
             }
         }
     }
-    
     .iconfont{
         color: #fff;
         line-height: 1.5rem;
@@ -289,14 +370,8 @@ export default {
     }
     .van-popup--bottom{
         height: 6rem;
-        border-radius: 0.2rem 0.2rem 0 0;
+        
         width: 100%;
     }
-    .song-list{
-        li{
-            height: 1rem;
-            width: 100%;
-            color: #000;
-        }
-    }
+    
 </style>

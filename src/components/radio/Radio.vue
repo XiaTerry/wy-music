@@ -1,17 +1,15 @@
 <template>
     <div class="radio">
-        <player-bar></player-bar>
         <h1>电台</h1>
         <vheader></vheader>
     </div>
 </template>
 
 <script>
-import PlayerBar from "../player/PlayerBar.vue";
+
 import Vheader from "../v-header/V-header.vue";
 export default {
     components:{
-        PlayerBar,
         Vheader
     }
 }

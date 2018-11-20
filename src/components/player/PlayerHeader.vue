@@ -3,23 +3,28 @@
         <van-row gutter="20">
             <van-col span="4"><i class="iconfont icon-fanhui" @click="goBack"></i></van-col>
             <van-col span="16">
-                <h4>{{getName}}</h4><p>{{getArName}}<i class="iconfont icon-fanhui1"></i></p>
-                
+                <h4>{{songName}}</h4><p>{{singer}}<i class="iconfont icon-fanhui1"></i></p>
             </van-col>
             <van-col span="4"><i class="iconfont icon-fenxiang"></i></van-col>
             </van-row>
     </div>
 </template>
 <script>
+import {mapGetters} from 'vuex'
 export default {
-    props:['getName','getArName'],
     data () {
         return {
-            id:this._props.getTitle
+            
         }
     },
     mounted(){
         // console.log(this._props)
+    },
+    computed:{
+        ...mapGetters([
+            'songName',
+            'singer'
+        ])
     },
     methods:{
         goBack(){

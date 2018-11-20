@@ -1,48 +1,78 @@
 <template>
+<div>
     <div class="player-bar">
         <div class="song-describe" @click="toPlayer">
-            <img v-lazy="img">
+            <img :src="imgSrc">
             <div class="song-title">
                 <p>
-                谁记得
+                {{songName}}
                 </p>
                 <p>
                     横滑可以切换上下首哦
                 </p>
+                <audio  ref="musicAudio" :src="musicSrc" autoplay="autoplay"></audio>
             </div>
         </div>
         <div class="icon">
-            <i class="iconfont icon-bofang1" v-show="isPlayer" @click="player"></i>
-            <i class="iconfont icon-bofang" v-show="isStop" @click="player"></i>
-            <i class="iconfont icon-caidan"></i>
+            <i class="iconfont icon-play" v-show="isPlayer" @click="player"></i>
+            <i class="iconfont icon-stop" v-show="isStop" @click="player"></i>
+            <i class="iconfont icon-caidan" @click="popup()"></i>
         </div>
-        
     </div>
+     <van-popup v-model="show" position="bottom" >
+        <PlayList></PlayList>
+    </van-popup>
+</div>
 </template>
 
 <script>
+import PlayList from '../playlist/Playlist.vue'
+import {mapGetters} from 'vuex'
 export default {
+    components:{
+        PlayList
+    },
     data () {
         return {
-            isPlayer:true,
-            isStop:false,
+            isPlayer:false,
+            isStop:true,
+            show: false,
             img:"http://p1.music.126.net/eZidSYwW1c8S7IDQjKRgBg==/109951163653489761.jpg"
         }
     },
+    computed:{
+        ...mapGetters([
+            'songName',
+            'musicSrc',
+            'imgSrc'
+        ])
+    },
     methods:{
         player(){
-            if(this.isStop==true){
-                this.isPlayer = true;
-                this.isStop = false;
-            }else{
-                this.isStop = true;
+            const audio = this.$refs.musicAudio
+            if(this.isStop==false){
                 this.isPlayer = false;
+                this.isStop = true;
+                audio.play()
+            }else{
+                this.isStop = false;
+                this.isPlayer = true;
+                audio.pause()
             }
-            
         },
         toPlayer(){
             console.log(123)
-        }
+            this.$router.push({
+                path:'/player'
+            })
+        },
+         popup(){
+            if(this.show==false){
+                this.show=true
+            }else{
+                this.show=false
+            }
+        },
     }
 }
 </script>
@@ -80,25 +110,17 @@ export default {
         .icon{
             position: relative;
             .iconfont{
-                font-size: 0.5rem;
+                font-size: 0.6rem;
                 padding: 0 0.2rem;
             }
-            .icon-bofang1{
-                font-size: 0.5rem;
-                right:  0.9rem;
-                top: 0.1rem;
-                font-size: 0.5rem;
-            }
-            .icon-bofang{
-                position: absolute;
-                right:  0.9rem;
-                font-size: 0.4rem;
-            }
             line-height: 1rem;
-            text-align: right;
             width: 35%;
-            height: 1rem;
             float: right;
         }
+    }
+    .van-popup--bottom{
+        height: 6rem;
+        
+        width: 100%;
     }
 </style>

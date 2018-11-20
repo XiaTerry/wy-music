@@ -12,6 +12,11 @@ export default new Router({
       component: Recommend,
     },
     {
+      path: '/search',
+      name: 'search',
+      component: () => import('./components/search/Search.vue')
+    },
+    {
       path: '/radio',
       name: 'radio',
       component: () => import( './components/radio/Radio.vue'),
@@ -37,7 +42,7 @@ export default new Router({
       component: ()=> import('./components/rank-detail/RankingList.vue')
     },
     {
-      path: '/player/:id',
+      path: '/player',
       name: 'player',
       component: ()=> import('./components/player/Player.vue')
     }

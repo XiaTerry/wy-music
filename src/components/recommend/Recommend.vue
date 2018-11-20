@@ -84,18 +84,18 @@
                 </li>
             </ul>
         </div>
-        <PlayerBar></PlayerBar>
+        <!-- <PlayerBar></PlayerBar> -->
     </div>
 </template>
 <script>
-import PlayerBar from "../player/PlayerBar.vue";
+// import PlayerBar from "../player/PlayerBar.vue";
 import Vheader from "../v-header/V-header.vue";
 import {getBanner, getRecommendList, getRecommendMusic,getDjprogram} from '../../api/recommend.js'
 import { HOST, ERR_OK } from '../../common/js/config.js';
 export default {
      components:{
         Vheader,
-        PlayerBar
+        // PlayerBar
     },
     data () {
         return {

@@ -11,7 +11,6 @@
                     <img v-lazy="creator.avatarUrl">
                     <span>{{creator.nickname}} <i class="iconfont icon-fanhui1"></i> </span>
                 </p>
-                
             </div>
             <div class="subscrib">
                 <van-row type="flex" justify="space-around">
@@ -26,8 +25,8 @@
             <ul>
                 <li class="song-msg">
                     <div class="icon">
-                        <i class="iconfont icon-bofang1" v-show="isPlayer" @click="player"></i>
-                        <i class="iconfont icon-bofang" v-show="isStop" @click="player"></i>
+                        <i class="iconfont icon-stop" v-show="isPlayer" @click="player"></i>
+                        <i class="iconfont icon-play" v-show="isStop" @click="player"></i>
                     </div>
                     <div class="palyer-count">
                         <h2>播放全部
@@ -38,11 +37,11 @@
                         +收藏({{playlist.subscribedCount}})
                     </div>
                 </li>
-                <li class="item-song" v-for="(item,index) in songArray" :key="item.id">
+                <li class="item-song" v-for="(item,index) in musicList" :key="item.id">
                     <div class="number">
                         {{index+1}}
                     </div>
-                    <div class="song-name" @click="toPlayer(item.id)">
+                    <div class="song-name" @click="toPlayer(item.id,index)">
                         <p>{{item.name}}</p>
                         <p>{{item.ar[0].name}}</p>
                     </div>
@@ -52,24 +51,22 @@
                 </li>
             </ul>
         </div>
-        <PlayerBar></PlayerBar>
     </div>
 </template>
 
 <script>
-import PlayerBar from "../player/PlayerBar.vue";
+
 import NavBar from "../v-header/NavBar.vue";
 import {getRecommendListDetail} from '../../api/recommend.js'
+import {mapGetters, mapMutations, mapActions} from 'vuex'
 export default {
     components:{
         NavBar,
-        PlayerBar
     },
     data () {
         return {
             nowId:this.$route.params.id,
             playlist:{},
-            songArray:[],
             creator:{},
             isPlayer:true,
             isStop:false,
@@ -77,15 +74,27 @@ export default {
     },
     created(){
         this._getRecommendListDetail()
+        this.getMusicList(this.playlist)
+        // console.log(this.currentSongId)
+    },
+    mounted(){
+        // console.log(this.MusicList)
+        this.MusicList()
+    },
+    computed:{
+        ...mapGetters([
+            'musicList',
+            'currentSongId'
+        ])
     },
     methods:{
         _getRecommendListDetail(){
             let id = this.nowId;
             getRecommendListDetail (id).then((res=>{
-                console.log(res)
                 this.playlist = res.data.playlist
                 this.creator = res.data.playlist.creator
-                this.songArray = res.data.playlist.tracks
+                console.log(res.data.playlist.tracks)
+                this.MusicList(res.data.playlist.tracks)
             }))
         },
         player(){
@@ -97,11 +106,25 @@ export default {
                 this.isPlayer = false;
             }
         },
-        toPlayer(id){
+        toPlayer(id,index){
+            this.setCurrentIndex(index)
+            this.setCurrentId(id)
             this.$router.push({
-                path:`/player/${id}`
+                name:'player',
+                params:{
+                    id:id,
+                    index:index
+                }
             })
-        }
+        },
+        ...mapMutations({
+            MusicList: 'SET_MUSIC_LIST',
+            setCurrentIndex: 'SET_CURRENT_INDEX',
+            setCurrentId:'setCurrentId'
+        }),
+        ...mapActions([
+        'getMusicList',
+    ])
     }
 }
 </script>
@@ -161,7 +184,7 @@ export default {
                 color: #ffe;
                 .iconfont{
                     line-height: 1rem;
-                    font-size: 0.4rem;
+                    font-size: 0.5rem;
                 }
             }
         }

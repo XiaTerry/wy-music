@@ -1,15 +1,25 @@
 <template>
   <div id="app">
       <router-view/>
+      <PlayerBar ref="player" v-show="isShow"></PlayerBar>
   </div>
+  
 </template>
 <script>
 import "../src/common/scss/reset.scss"
-
+import PlayerBar from "../src/components/player/PlayerBar.vue"
 export default {
   components:{
-   
+    PlayerBar
   },
+  data () {
+    return {
+      isShow:true
+    }
+  },
+  mounted(){
+    
+  }
 }
 </script>
 <style lang="scss" scoped>
