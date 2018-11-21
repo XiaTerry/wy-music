@@ -2,7 +2,7 @@
 <div>
     <div class="player-bar">
         <div class="song-describe" @click="toPlayer">
-            <img :src="imgSrc">
+            <img :src="imgSrc" >
             <div class="song-title">
                 <p>
                 {{songName}}
@@ -10,7 +10,7 @@
                 <!-- <p>
                     横滑可以切换上下首哦
                 </p> -->
-                <audio  ref="musicAudio" :src="musicSrc" autoplay="autoplay"></audio>
+                <!-- <audio  ref="musicAudio" :src="musicSrc" autoplay="autoplay"></audio> -->
             </div>
         </div>
         <div class="icon">

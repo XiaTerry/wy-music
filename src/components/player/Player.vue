@@ -1,7 +1,7 @@
 <template>
     <div id="player" >
         <PlayerHeader></PlayerHeader>
-        <!-- <audio  ref="musicAudio" :src="musicSrc" autoplay="autoplay" class="audio-ctrl" @timeupdate="updateTime"></audio> -->
+        
         <div class="disc" >
            <transition>
             <div class="one rotate" ref="disc">
@@ -27,7 +27,7 @@
                 <div class="progress-center">
                      <div class="progress">
                         <span class="progress-l" :style="'width:'+ num * 1 +'%;'">
-                            <span class="pivot" @click="getTime()"><span></span></span>
+                            <span class="pivot" @mousemove="getTime()"><span></span></span>
                         </span>
                     </div>
                 </div>
@@ -47,6 +47,7 @@
         <van-popup v-model="show" position="bottom">
             <PlayList></PlayList>
         </van-popup>
+        <audio  ref="musicAudio" :src="musicSrc" autoplay="autoplay" class="audio-ctrl" @timeupdate="updateTime"></audio>
     </div>
 </template>
 
@@ -67,7 +68,7 @@ export default {
             isPlay:false,
             isStop:true,
             picUrl:"",
-            audio:null,
+            // audio:null,
             duration:0,
             currentTime:0,
             min:'0',
@@ -83,19 +84,23 @@ export default {
     },
     mounted(){
         this.$root.$children[0].isShow = false
-        this.audio = this.$root.$children[0].$refs.player.$refs.musicAudio
-        this.currentTime = this.audio.currentTime
+        // this.audio = this.$root.$children[0].$refs.player.$refs.musicAudio
+        let audio = this.$refs.musicAudio
+        this.currentTime = audio.currentTime
+        console.log(this.audio)
+        // console.log(this.$refs)
         
     },
     beforeDestroy(){
         this.$root.$children[0].isShow = true
-        this.duration = this.audio.duration
+        // this.duration = this.audio.duration
     },
     created(){
         this._getSongDetail()
         this._getSong()
-        
-        
+    },
+    destroyed(){
+        // console.log(this)
     },
     computed:{
         ...mapGetters([
@@ -121,7 +126,7 @@ export default {
             }))
         },
         getTime(){
-            
+            // console.log(this.num)
         },
         popup(){
             if(this.show==false){
@@ -132,37 +137,45 @@ export default {
         },
         //点击播放和暂停
         player(){
-            
+            let audio =this.$refs.musicAudio
             if(this.isStop == false){
                 this.isStop = true
                 this.isPlay = false
                 this.$refs.disc.className="one rotate"
-                this.audio.play()
+                // this.audio.play()
+                audio.play()
             }else{
                 this.isStop = false
                 this.isPlay = true
-                this.audio.pause()
+                // this.audio.pause()
+                audio.pause()
                 this.$refs.disc.className="one"
             }
             
         },
         //点击上一曲
         prev(){
-            this.duration = this.audio.duration
-            this.currentTime = this.audio.currentTime
+            let audio =this.$refs.musicAudio
+            this.duration = audio.duration
+            this.currentTime = audio.currentTime
             let index = this.nowIndex-1
-            if(this.nowIndex==0){
-                index = this.musicList.length
+            if(this.nowIndex==-1){
+                index = this.musicList.length-1
             }
+            this.setCurrentIndex(index)
+            // console.log(this.audio)
+            // console.log(index)
             this.selectPlay(index)
             this.setCurrentId(this.musicList[index].id)
             this._getSongDetail()
             this._getSong()
+            // console.log(this.musicList[index].id)
         },
         //点击下一曲
         next(){
-            this.duration = this.audio.duration
-            this.currentTime = this.audio.currentTime
+            let audio =this.$refs.musicAudio
+            this.duration = audio.duration
+            this.currentTime = audio.currentTime
             let index = this.nowIndex+1
             if(index==this.musicList.length){
                 index = 0
@@ -199,11 +212,7 @@ export default {
                 return
             }
             this.currentTime = e.target.currentTime
-            let min = Math.floor(this.duration/60)
-            let sec = Math.floor(this.duration%60)
-            let sum = min*60 + sec
-            // console.log(sum)
-            
+            this.num = this.currentTime
         },
     }
 }
