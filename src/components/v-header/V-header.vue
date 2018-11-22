@@ -36,7 +36,6 @@
             <van-col span="6"><router-link to="/friend">朋友</router-link></van-col>
             <van-col span="6"><router-link to="/radio">电台</router-link></van-col>
         </van-row>
-
     </div>
 </template>
 
