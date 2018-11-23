@@ -8,7 +8,7 @@
         <van-row type="flex" justify="space-around" class="radio-menu">
             <van-col span="5">
                 <div class="item">
-                    <i class="iconfont icon-icon-test1"></i>
+                    <i @click="goCatelist()" class="iconfont icon-icon-test1"></i>
                 </div>
                电台分类
             </van-col>
@@ -34,14 +34,14 @@
         <div class="today-priority">
             <h2>今日优选</h2>
             <ul>
-                <li class="today-priority-list">
+                <li class="today-priority-list" v-for="(item,index) in djList" :key="index">
                     <div class="img">
-                        <img v-lazy="img">
+                        <img v-lazy="item.picUrl">
                     </div>
                     <div class="msg">
-                        <h2>小鬼-王琳的</h2>
-                        <p>节目:7</p>
-                        <p>小鬼-王琳</p>
+                        <h2>{{item.name}}</h2>
+                        <p>节目:{{item.categoryId}}</p>
+                        <p>{{item.rcmdtext}}</p>
                     </div>
                 </li>
             </ul>
@@ -50,22 +50,44 @@
 </template>
 
 <script>
-import {getBanner} from '../../api/radio.js'
+import {getDjprogram,getDjCateList} from '../../api/radio.js'
 import Vheader from "../v-header/V-header.vue"
 import Banner from "../banner/Banner.vue"
 import { HOST, ERR_OK } from '../../common/js/config.js'
+
 export default {
     components:{
         Vheader,
-        Banner
+        Banner,
+    },
+    created(){
+        this._getDjprogram()
+        
     },
     data () {
         return {
             images: [],
+            djList:[],
             img: 'http://p2.music.126.net/eZidSYwW1c8S7IDQjKRgBg==/109951163653489761.jpg'
         }
     },
-    
+    methods:{
+        _getDjprogram(){
+            getDjprogram().then((res=>{
+                if(res.status === ERR_OK){
+                    this.djList = res.data.djRadios
+                }else{
+                    console.error("数据获取失败！")
+                }
+            }))
+        },
+        
+        goCatelist(){
+            this.$router.push({
+                path: '/djcatelist',
+            })
+        }
+    }
 }
 </script>
 <style lang="scss" scoped>
@@ -108,6 +130,7 @@ export default {
     }
 }
 .today-priority{
+    margin-bottom: 1rem;
     >h2{
         margin-top: 0.2rem;
         padding: 0.2rem;
@@ -118,6 +141,7 @@ export default {
         font-weight: 800;
     }
     &-list{
+        margin-bottom: 0.1rem;
         height: 2rem;
         width: 100%;
         .img{

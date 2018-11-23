@@ -45,6 +45,11 @@ export default new Router({
       path: '/player',
       name: 'player',
       component: ()=> import('./components/player/Player.vue')
+    },
+    {
+      path: '/djcatelist',
+      name: 'djcatelist',
+      component: () => import('./components/radio/Djcatelist.vue')
     }
   ],
 });
