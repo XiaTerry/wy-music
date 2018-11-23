@@ -60,7 +60,7 @@ export default {
             getRecommendList().then((res=>{
                 if(res.status === ERR_OK){
                     this.songList = res.data.result
-
+                    
                 }else{
                     console.error('推荐歌曲 获取失败')
                 }
