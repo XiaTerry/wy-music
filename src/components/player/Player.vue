@@ -26,7 +26,7 @@
                 <span class="progress-time">{{format(currentTime)}}</span>
                 <div class="progress-center">
                      <div class="progress">
-                        <span class="progress-l" :style="'width:'+ num * 1 +'%;'">
+                        <span class="progress-l" :style="'width:'+ num  +'%;'">
                             <span class="pivot" @mousemove="getTime()"><span></span></span>
                         </span>
                     </div>
@@ -68,13 +68,11 @@ export default {
             isPlay:false,
             isStop:true,
             picUrl:"",
-            // audio:null,
-            duration:0,
+            duration:"",
             currentTime:0,
             min:'0',
             sec:0,
             num:0,
-            
         }
     },
     watch:{
@@ -84,20 +82,16 @@ export default {
     },
     mounted(){
         this.$root.$children[0].isShow = false
-        // this.audio = this.$root.$children[0].$refs.player.$refs.musicAudio
-        let audio = this.$refs.musicAudio
-        this.currentTime = audio.currentTime
-        console.log(this.audio)
-        // console.log(this.$refs)
-        
+        this.addEventListeners()
     },
     beforeDestroy(){
         this.$root.$children[0].isShow = true
-        // this.duration = this.audio.duration
+        
     },
     created(){
         this._getSongDetail()
         this._getSong()
+        
     },
     destroyed(){
         // console.log(this)
@@ -112,8 +106,25 @@ export default {
     ])
     },
     methods:{
+        addEventListeners(){ 
+            const self = this;        
+            self.$refs.musicAudio.addEventListener('timeupdate', self._currentTime),
+            self.$refs.musicAudio.addEventListener('canplay', self._durationTime)      
+        },      
+        removeEventListeners() {  
+            const self = this;       
+            self.$refs.musicAudio.removeEventListener('timeupdate', self._currentTime) 
+            self.$refs.musicAudio.removeEventListener('canplay', self._durationTime) 
+        },   
+        _currentTime(){  
+            const self = this;       
+            self.currentTime = parseInt(self.$refs.musicAudio.currentTime)   
+        },     
+        _durationTime(){     
+            const self = this;       
+            self.duration = parseInt(self.$refs.musicAudio.duration)  
+        },    
         _getSongDetail(){
-           
             getSongDetail(this.currentSongId).then((res=>{
                 this.getImgSrc(res.data.songs[0].al.picUrl)
                 this.getSongName(res.data.songs[0].name)
@@ -163,13 +174,10 @@ export default {
                 index = this.musicList.length-1
             }
             this.setCurrentIndex(index)
-            // console.log(this.audio)
-            // console.log(index)
             this.selectPlay(index)
             this.setCurrentId(this.musicList[index].id)
             this._getSongDetail()
             this._getSong()
-            // console.log(this.musicList[index].id)
         },
         //点击下一曲
         next(){
@@ -208,11 +216,9 @@ export default {
             return minute + ':' + second
         },
         updateTime (e) {
-            if (this.move) {
-                return
-            }
             this.currentTime = e.target.currentTime
             this.num = this.currentTime
+            console.log(this.currentTime%60)
         },
     }
 }

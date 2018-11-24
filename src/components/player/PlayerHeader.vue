@@ -51,6 +51,10 @@ export default {
             font-size: $font-size-large-l;
             font-weight: 500;
             line-height: 0.6rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap; 
+            
         }
         p{
             font-size: $font-size-medium;
