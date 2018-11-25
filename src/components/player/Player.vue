@@ -217,9 +217,8 @@ export default {
         },
         updateTime (e) {
             this.currentTime = e.target.currentTime
-            this.num = this.currentTime
-            console.log(this.currentTime%60)
         },
+        
     }
 }
 </script>

@@ -40,6 +40,9 @@ export default {
             img:"http://p1.music.126.net/eZidSYwW1c8S7IDQjKRgBg==/109951163653489761.jpg"
         }
     },
+    mounted(){
+        console.log(this)
+    },
     computed:{
         ...mapGetters([
             'songName',

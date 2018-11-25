@@ -28,7 +28,11 @@ export default {
         }else if(baseURI == 'http://localhost:8080/#/songList'){
             this.title.name = '歌单'
             this.title.bg = '#E3150f'
-        }else{
+        }else if(baseURI == 'http://localhost:8080/#/search'){
+            this.title.name = '搜索'
+            this.title.bg = '#E3150f'
+        }
+        else{
             this.title.name = '歌单'
             this.title.bg = ''
         }

@@ -47,17 +47,20 @@ export default {
             box-sizing:border-box;
             padding:0.2rem;
             border-bottom:1px solid #eee;
+            
         }
         .name{
             float: left;
+            width: 80%;
             line-height: 0.6rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             p{
                 float: left;
                 font-size: 16px;
                 color: #000;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
+                
             }
             span{
                 font-size: 12px;
