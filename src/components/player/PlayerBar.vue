@@ -1,22 +1,18 @@
 <template>
 <div>
     <div class="player-bar">
-        <div class="song-describe" @click="toPlayer">
+        <div class="song-describe" >
             <img :src="imgSrc" >
             <div class="song-title">
                 <p>
                 {{songName}}
                 </p>
-                <!-- <p>
-                    横滑可以切换上下首哦
-                </p> -->
-                <!-- <audio  ref="musicAudio" :src="musicSrc" autoplay="autoplay"></audio> -->
             </div>
         </div>
         <div class="icon">
             <i class="iconfont icon-play" v-show="isPlayer" @click="player"></i>
             <i class="iconfont icon-stop" v-show="isStop" @click="player"></i>
-            <i class="iconfont icon-caidan" @click="popup()"></i>
+            <i class="iconfont icon-caidan" @click.capture="popup()"></i>
         </div>
     </div>
      <van-popup v-model="show" position="bottom" >
@@ -37,11 +33,12 @@ export default {
             isPlayer:false,
             isStop:true,
             show: false,
+            isShow: false,
             img:"http://p1.music.126.net/eZidSYwW1c8S7IDQjKRgBg==/109951163653489761.jpg"
         }
     },
     mounted(){
-        console.log(this)
+        // console.log(this)
     },
     computed:{
         ...mapGetters([
@@ -68,11 +65,20 @@ export default {
                 path:'/player'
             })
         },
-         popup(){
-            if(this.show==false){
-                this.show=true
+        popup(){
+            if(this.show == false || this.isShow == false){
+                this.show = true
+                this.isShow = true
             }else{
-                this.show=false
+                this.show = false
+                this.isShow = false
+            }
+        },
+        popup1(){
+            if(this.isShow == false){
+                this.isShow = true
+            }else{
+                this.isShow = false
             }
         },
     }

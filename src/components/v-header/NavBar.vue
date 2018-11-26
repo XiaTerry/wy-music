@@ -17,7 +17,7 @@ export default {
         }
     },
     mounted(){
-        console.log(this)
+        // console.log(this)
         let baseURI = this.$el.baseURI
         if(baseURI == 'http://localhost:8080/#/djcatelist'){
             this.title.name = '电台分类'
@@ -34,7 +34,7 @@ export default {
         }
         else{
             this.title.name = '歌单'
-            this.title.bg = ''
+            this.title.bg = '#E3150f'
         }
     },
     methods:{

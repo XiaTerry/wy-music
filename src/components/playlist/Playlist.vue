@@ -2,7 +2,7 @@
         <ul class="song-list">
         <li>
             <div class="name">   
-                <p>列表循环({{musicList.length!=""?musicList.length:0}})</p>
+                <p>列表循环({{length}})</p>
             </div>
             <div class="operation">
                 <p>收藏全部</p>
@@ -26,8 +26,11 @@ import {mapGetters, mapMutations, mapActions} from 'vuex'
 export default {
     data () {
         return {
-            
+            length:0
         }
+    },
+    mounted(){
+        this.length=this.musicList.length
     },
     computed:{
         ...mapGetters([

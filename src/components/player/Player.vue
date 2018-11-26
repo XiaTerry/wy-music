@@ -47,7 +47,7 @@
         <van-popup v-model="show" position="bottom">
             <PlayList></PlayList>
         </van-popup>
-        <audio  ref="musicAudio" :src="musicSrc" autoplay="autoplay" class="audio-ctrl" @timeupdate="updateTime"></audio>
+        <audio  ref="musicAudio" :src="musicSrc"  autoplay="autoplay" class="audio-ctrl" @timeupdate="updateTime"></audio>
     </div>
 </template>
 
@@ -86,7 +86,7 @@ export default {
     },
     beforeDestroy(){
         this.$root.$children[0].isShow = true
-        
+        this.removeEventListeners()
     },
     created(){
         this._getSongDetail()
@@ -94,7 +94,8 @@ export default {
         
     },
     destroyed(){
-        // console.log(this)
+        // this.removeEventListeners()
+
     },
     computed:{
         ...mapGetters([
@@ -106,23 +107,22 @@ export default {
     ])
     },
     methods:{
-        addEventListeners(){ 
+        addEventListeners(){
+            
             const self = this;        
             self.$refs.musicAudio.addEventListener('timeupdate', self._currentTime),
             self.$refs.musicAudio.addEventListener('canplay', self._durationTime)      
         },      
         removeEventListeners() {  
-            const self = this;       
+            const self = this;     
             self.$refs.musicAudio.removeEventListener('timeupdate', self._currentTime) 
             self.$refs.musicAudio.removeEventListener('canplay', self._durationTime) 
         },   
         _currentTime(){  
-            const self = this;       
-            self.currentTime = parseInt(self.$refs.musicAudio.currentTime)   
+            this.currentTime = parseInt(this.$refs.musicAudio.currentTime)   
         },     
         _durationTime(){     
-            const self = this;       
-            self.duration = parseInt(self.$refs.musicAudio.duration)  
+            this.duration = parseInt(this.$refs.musicAudio.duration)  
         },    
         _getSongDetail(){
             getSongDetail(this.currentSongId).then((res=>{
@@ -170,7 +170,7 @@ export default {
             this.duration = audio.duration
             this.currentTime = audio.currentTime
             let index = this.nowIndex-1
-            if(this.nowIndex==-1){
+            if(index == -1){
                 index = this.musicList.length-1
             }
             this.setCurrentIndex(index)
@@ -217,8 +217,13 @@ export default {
         },
         updateTime (e) {
             this.currentTime = e.target.currentTime
+            this.num = parseInt(this.currentTime%60)
+            if(this.num == 60){
+                this.num +=60
+            }
+            
+            console.log(this.num)
         },
-        
     }
 }
 </script>
