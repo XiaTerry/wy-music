@@ -26,7 +26,7 @@
                 <span class="progress-time">{{format(currentTime)}}</span>
                 <div class="progress-center">
                      <div class="progress">
-                        <span class="progress-l" :style="'width:'+ num  +'%;'">
+                        <span class="progress-l" :style="'width:'+ num +'%;'">
                             <span class="pivot" @mousemove="getTime()"><span></span></span>
                         </span>
                     </div>
@@ -34,7 +34,10 @@
                 <span class="progress-sumtime">{{format(duration)}}</span>
             </div>
             <van-row class="palyer-type" type="flex" justify="center">
-                <van-col span="5"><i class="iconfont icon-liebiaoxunhuan1"></i></van-col>
+                <van-col span="5">
+                    <i @click="loop" v-show="!isLoop" class="iconfont icon-liebiaoxunhuan1"></i>
+                    <i @click="loop" v-show="isLoop" class="iconfont icon-icon-test"></i>
+                </van-col>
                 <van-col span="5"><i @click="prev" class="iconfont icon-shangyiqu"></i></van-col>
                 <van-col span="5">
                     <i  @click="player" class="iconfont icon-play" v-show="isPlay"></i>
@@ -67,6 +70,7 @@ export default {
             show: false,
             isPlay:false,
             isStop:true,
+            isLoop: true,
             picUrl:"",
             duration:"",
             currentTime:0,
@@ -83,6 +87,7 @@ export default {
     mounted(){
         this.$root.$children[0].isShow = false
         this.addEventListeners()
+        this.playMode()
     },
     beforeDestroy(){
         this.$root.$children[0].isShow = true
@@ -194,6 +199,23 @@ export default {
             this._getSong()
             
         },
+        loop(){
+            let audio =this.$refs.musicAudio
+            if(this.isLoop == false){
+                this.isLoop = true
+                audio.loop = 'loop'
+            }else{
+                this.isLoop = false
+                audio.loop = ''
+            }
+            console.log(audio.loop)
+        },
+        playMode(){
+            let audio =this.$refs.musicAudio
+            if(audio.duration == 0 && audio.loop==false){
+                this.next()
+            }
+        },
         ...mapMutations({
             setCurrentIndex: 'SET_CURRENT_INDEX',
             setCurrentId:'setCurrentId',
@@ -217,12 +239,11 @@ export default {
         },
         updateTime (e) {
             this.currentTime = e.target.currentTime
-            this.num = parseInt(this.currentTime%60)
-            if(this.num == 60){
-                this.num +=60
+            this.num = this.currentTime/e.target.duration.toFixed(3) * 100
+            if(e.target.ended == true){
+                this.isStop = true
+                this.isPlay = false
             }
-            
-            console.log(this.num)
         },
     }
 }
@@ -380,7 +401,6 @@ export default {
     }
     .van-popup--bottom{
         height: 6rem;
-        
         width: 100%;
     }
     

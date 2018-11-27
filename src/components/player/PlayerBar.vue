@@ -1,7 +1,7 @@
 <template>
 <div>
     <div class="player-bar">
-        <div class="song-describe" >
+        <div class="song-describe" @click="toPlayer">
             <img :src="imgSrc" >
             <div class="song-title">
                 <p>
@@ -12,10 +12,10 @@
         <div class="icon">
             <i class="iconfont icon-play" v-show="isPlayer" @click="player"></i>
             <i class="iconfont icon-stop" v-show="isStop" @click="player"></i>
-            <i class="iconfont icon-caidan" @click.capture="popup()"></i>
+            <i class="iconfont icon-caidan" @click="popup()"></i>
         </div>
     </div>
-     <van-popup v-model="show" position="bottom" >
+    <van-popup v-model="show" position="bottom" >
         <PlayList></PlayList>
     </van-popup>
 </div>
@@ -23,10 +23,12 @@
 
 <script>
 import PlayList from '../playlist/Playlist.vue'
+import Player from '../player/Player.vue'
 import {mapGetters} from 'vuex'
 export default {
     components:{
-        PlayList
+        PlayList,
+        Player
     },
     data () {
         return {
@@ -38,7 +40,8 @@ export default {
         }
     },
     mounted(){
-        // console.log(this)
+        let p = this.$refs.player
+        
     },
     computed:{
         ...mapGetters([
@@ -66,19 +69,11 @@ export default {
             })
         },
         popup(){
-            if(this.show == false || this.isShow == false){
+            if(this.show == false){
                 this.show = true
-                this.isShow = true
+                
             }else{
                 this.show = false
-                this.isShow = false
-            }
-        },
-        popup1(){
-            if(this.isShow == false){
-                this.isShow = true
-            }else{
-                this.isShow = false
             }
         },
     }
@@ -87,6 +82,9 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../common/scss/variable.scss";
+.play{
+    background: red;
+}
     .player-bar{
         position: fixed;
         left: 0;
@@ -95,10 +93,12 @@ export default {
         height: 1rem;
         background: #fff;
         .song-describe{
+            width: 65%;
+            float: left;
             .song-title{
                 font-size: $font-size-small-ss;
-                float: left;
-                width: 45%;
+                float: right;
+                width: 70%;
                 text-align: left;
                 box-sizing: border-box;
                 padding: 0.1rem 0;
@@ -112,7 +112,7 @@ export default {
                 box-sizing: border-box;
                 border-radius: 0.2rem; 
                 height: 1rem;
-                width: 20%;
+                width: 30%;
             }
         }
         .icon{
