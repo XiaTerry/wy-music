@@ -1,4 +1,4 @@
-// import {playMode} from '../common/js/config'
+
 // import {loadSearch,loadPlay,loadFavorite} from '../common/js/'
 
 const state = {
@@ -8,6 +8,6 @@ const state = {
     songName:'',
     singer:'',
     musicSrc:'',
-    imgSrc:''
+    imgSrc:'',
 }
 export default state

@@ -40,7 +40,7 @@ export default {
         }
     },
     mounted(){
-        let p = this.$refs.player
+        console.log(this)
         
     },
     computed:{

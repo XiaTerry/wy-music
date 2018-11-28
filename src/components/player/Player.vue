@@ -4,7 +4,7 @@
         
         <div class="disc" >
            <transition>
-            <div class="one rotate" ref="disc">
+            <div class="one" ref="disc">
                 <div class="two">
                     <div class="three">
                         <div class="four">
@@ -35,12 +35,11 @@
             </div>
             <van-row class="palyer-type" type="flex" justify="center">
                 <van-col span="5">
-                    <i @click="loop" v-show="!isLoop" class="iconfont icon-liebiaoxunhuan1"></i>
-                    <i @click="loop" v-show="isLoop" class="iconfont icon-icon-test"></i>
+                    <i @click="changeMode"  class="iconfont" :class="iconMode"></i>
                 </van-col>
                 <van-col span="5"><i @click="prev" class="iconfont icon-shangyiqu"></i></van-col>
                 <van-col span="5">
-                    <i  @click="player" class="iconfont icon-play" v-show="isPlay"></i>
+                    <i  @click="player" class="iconfont icon-play" v-show="!isStop"></i>
                     <i @click="player" class="iconfont icon-stop" v-show="isStop"></i>
                 </van-col>
                 <van-col span="5"><i @click="next()"  class="iconfont icon-xiayiqu"></i></van-col>
@@ -68,7 +67,11 @@ export default {
     data () {
         return {
             show: false,
-            isPlay:false,
+            modeList: ['loop','loopList'],
+            iconMode: 'icon-liebiaoxunhuan1',
+            mode:'',
+            nowMode:0,
+            isRadom:true,
             isStop:true,
             isLoop: true,
             picUrl:"",
@@ -87,7 +90,6 @@ export default {
     mounted(){
         this.$root.$children[0].isShow = false
         this.addEventListeners()
-        this.playMode()
     },
     beforeDestroy(){
         this.$root.$children[0].isShow = true
@@ -108,12 +110,11 @@ export default {
         'musicList',
         'currentSongId',
         'musicSrc',
-        'imgSrc'
+        'imgSrc',
     ])
     },
     methods:{
         addEventListeners(){
-            
             const self = this;        
             self.$refs.musicAudio.addEventListener('timeupdate', self._currentTime),
             self.$refs.musicAudio.addEventListener('canplay', self._durationTime)      
@@ -141,9 +142,6 @@ export default {
                this.getSongUrl(res.data.data[0].url)
             }))
         },
-        getTime(){
-            // console.log(this.num)
-        },
         popup(){
             if(this.show==false){
                 this.show=true
@@ -154,20 +152,24 @@ export default {
         //点击播放和暂停
         player(){
             let audio =this.$refs.musicAudio
+            let disc = this.$refs.disc
             if(this.isStop == false){
                 this.isStop = true
-                this.isPlay = false
-                this.$refs.disc.className="one rotate"
-                // this.audio.play()
+                disc.style.animationPlayState = 'running'
                 audio.play()
-            }else{
+            }else {
                 this.isStop = false
-                this.isPlay = true
-                // this.audio.pause()
                 audio.pause()
-                this.$refs.disc.className="one"
+                disc.style.animationPlayState = 'paused'
             }
             
+        },
+        //歌曲设置
+        setSongs(index){
+            this.selectPlay(index)
+            this.setCurrentId(this.musicList[index].id)
+            this._getSongDetail()
+            this._getSong()
         },
         //点击上一曲
         prev(){
@@ -178,43 +180,65 @@ export default {
             if(index == -1){
                 index = this.musicList.length-1
             }
-            this.setCurrentIndex(index)
-            this.selectPlay(index)
-            this.setCurrentId(this.musicList[index].id)
-            this._getSongDetail()
-            this._getSong()
+           this.setSongs(index)
         },
         //点击下一曲
         next(){
             let audio =this.$refs.musicAudio
             this.duration = audio.duration
             this.currentTime = audio.currentTime
-            let index = this.nowIndex+1
-            if(index==this.musicList.length){
-                index = 0
+           
+            if(this.mode == 'random' ){
+                let max =  this.musicList.length
+                let radom = Math.floor ((Math.random() * max) + 1) -1
+                this.radomPlay(radom)
+            }else{
+                let index = this.nowIndex+1
+                if(index==this.musicList.length){
+                    index = 0
+                }
+                this.setSongs(index)
             }
-            this.selectPlay(index)
-            this.setCurrentId(this.musicList[index].id)
-            this._getSongDetail()
-            this._getSong()
             
         },
-        loop(){
-            let audio =this.$refs.musicAudio
-            if(this.isLoop == false){
-                this.isLoop = true
-                audio.loop = 'loop'
-            }else{
-                this.isLoop = false
-                audio.loop = ''
-            }
-            console.log(audio.loop)
+        //随机播放
+        radomPlay(index){
+            this.setSongs(index)
         },
-        playMode(){
-            let audio =this.$refs.musicAudio
-            if(audio.duration == 0 && audio.loop==false){
-                this.next()
+        playMode(mode){
+            let audio = this.$refs.musicAudio
+            
+            if(this.mode == 'loop'){
+                audio.loop = true
+            }else if(this.mode == 'loopList'){
+                audio.loop = false
+            }else{
+                audio.loop = false
             }
+            console.log()
+        },
+        changeMode(){
+            let index = this.nowMode++
+            if(index == 2){
+                this.nowMode = 0
+            }
+            if(this.modeList[index] == 'loop'){
+                this.iconMode = 'icon-icon-test'
+                this.mode = 'loop'
+                this.playMode(this.mode)
+            }
+            else if(this.modeList[index] == 'loopList'){
+                this.iconMode = 'icon-liebiaoxunhuan1'
+                this.mode = 'loopList'
+                this.playMode(this.mode)
+            }else{
+                this.iconMode = 'icon-suijibofang'
+                this.mode = 'random'
+                this.playMode(this.mode)
+            }
+            
+            console.log(this.mode)
+            
         },
         ...mapMutations({
             setCurrentIndex: 'SET_CURRENT_INDEX',
@@ -240,10 +264,16 @@ export default {
         updateTime (e) {
             this.currentTime = e.target.currentTime
             this.num = this.currentTime/e.target.duration.toFixed(3) * 100
-            if(e.target.ended == true){
-                this.isStop = true
-                this.isPlay = false
+            if(e.target.ended == true && this.mode != 'loop'){
+                this.isStop = false
+                this.next()
             }
+            if(e.target.paused == true){
+                this.isStop = false
+            }else{
+                this.isStop = true
+            }
+            // console.log(e.target.paused)
         },
     }
 }
@@ -267,9 +297,7 @@ export default {
             height: 71%;
             background: rgba(0,0,0,0.3);
             position: relative;
-            .rotate{
-                animation: rotate-disk 20s infinite normal linear; 
-            }
+
             .one{
                 margin: auto;
                 width: 4rem;
@@ -282,6 +310,8 @@ export default {
                 top: 50%;
                 margin-left: -2rem;
                 margin-top: -2rem;
+                animation: rotate-disk 20s infinite linear forwards;
+   
                 .two{
                     height: 3.5rem;
                     width: 3.5rem;

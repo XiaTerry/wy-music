@@ -1,7 +1,7 @@
 import * as types from './mutations-type'
 const mutations = {
     [types.SET_CURRENT_INDEX] (state,index) {
-        state.nowIndex=index
+        state.nowIndex = index
     },
     [types.SET_MUSIC_LIST] (state,list) {
         state.musicList = list
