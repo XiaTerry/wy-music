@@ -25,3 +25,6 @@ export const SET_PLAY_HISTORY = 'SET_PLAY_HISTORY'
 export const SET_FAVORITE_LIST = 'SET_FAVORITE_LIST'
 
 export const SET_CURRENT_ID = 'SET_CURRENT_ID'
+
+export const GET_SHOW_PLAYER = 'GET_SHOW_PLAYER'
+ 

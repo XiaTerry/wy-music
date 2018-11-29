@@ -46,7 +46,7 @@ export default {
         }
     },
     mounted(){
-        console.log(this.getShowPlayer)
+        console.log()
         
     },
     computed:{
@@ -68,7 +68,7 @@ export default {
         ]),
         play(){
             this.getShowPlayer(true)
-           console.log(this.showPlayer)
+        //    console.log(this.showPlayer)
         },
         player(){
             const audio = this.$refs.musicAudio

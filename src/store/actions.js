@@ -7,6 +7,6 @@ export const selectPlay = function({commit},index){
 export const getMusicList= function({commit},list){
     commit(types.SET_MUSIC_LIST,list)
 }
-export const getShowPlayer = function(commit,showPlayer){
-    commit(setShowPlayer,showPlayer)
+export const getShowPlayer = function({commit},showPlayer){
+    commit(types.GET_SHOW_PLAYER,showPlayer)
 }

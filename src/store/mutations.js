@@ -21,7 +21,7 @@ const mutations = {
     getImgSrc (state,imgSrc){
         state.imgSrc = imgSrc
     },
-    setShowPlayer(state,showPlayer){
+    [types.GET_SHOW_PLAYER](state,showPlayer){
         state.showPlayer = showPlayer
     }
 }
