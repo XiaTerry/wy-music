@@ -49,6 +49,7 @@
         <van-popup v-model="show" position="bottom">
             <PlayList></PlayList>
         </van-popup>
+       
         <audio  ref="musicAudio" :src="musicSrc"  autoplay="autoplay" class="audio-ctrl" @timeupdate="updateTime"></audio>
     </div>
 </template>
@@ -60,6 +61,7 @@ import {getSongDetail,getSong} from '../../api/player.js'
 import {mapGetters, mapMutations, mapActions} from 'vuex'
 import PlayerHeader from './PlayerHeader.vue'
 export default {
+    
     components:{
         PlayerHeader,
         PlayList
@@ -90,6 +92,7 @@ export default {
     mounted(){
         this.$root.$children[0].isShow = false
         this.addEventListeners()
+        console.log(this)
     },
     beforeDestroy(){
         this.$root.$children[0].isShow = true

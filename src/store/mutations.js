@@ -20,6 +20,9 @@ const mutations = {
     },
     getImgSrc (state,imgSrc){
         state.imgSrc = imgSrc
+    },
+    setShowPlayer(state,showPlayer){
+        state.showPlayer = showPlayer
     }
 }
 export default mutations

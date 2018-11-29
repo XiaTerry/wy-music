@@ -1,7 +1,7 @@
 <template>
   <div id="app">
       <router-view/>
-      <Player v-show="isPlayer"></Player>
+      <!-- <Player v-show="isPlayer"></Player> -->
       <PlayerBar ref="player" v-show="isShow"></PlayerBar>
   </div>
   
@@ -9,11 +9,11 @@
 <script>
 import "../src/common/scss/reset.scss"
 import PlayerBar from "../src/components/player/PlayerBar.vue"
-import Player from "../src/components/player/Player.vue"
+// import Player from "../src/components/player/Player.vue"
 export default {
   components:{
     PlayerBar,
-    Player
+    // Player
   },
   data () {
     return {

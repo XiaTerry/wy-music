@@ -6,3 +6,4 @@ export const songName = state => state.songName
 export const singer = state => state.singer
 export const musicSrc = state =>state.musicSrc
 export const imgSrc = state => state.imgSrc
+export const showPlayer = state => state.showPlayer

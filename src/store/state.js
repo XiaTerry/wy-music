@@ -9,5 +9,6 @@ const state = {
     singer:'',
     musicSrc:'',
     imgSrc:'',
+    showPlayer:false,
 }
 export default state

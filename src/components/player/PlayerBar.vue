@@ -1,8 +1,8 @@
 <template>
 <div>
     <div class="player-bar">
-        <div class="song-describe" @click="toPlayer">
-            <img :src="imgSrc" >
+        <div class="song-describe" @click="play()">
+            <img v-lazy="imgSrc" >
             <div class="song-title">
                 <p>
                 {{songName}}
@@ -18,17 +18,23 @@
     <van-popup v-model="show" position="bottom" >
         <PlayList></PlayList>
     </van-popup>
+    <van-popup v-model="showPlayer"  position="bottom" @click-overlay="clickOverlay">
+        
+    </van-popup>
+
 </div>
 </template>
 
 <script>
 import PlayList from '../playlist/Playlist.vue'
 import Player from '../player/Player.vue'
-import {mapGetters} from 'vuex'
+import {mapGetters,mapMutations,mapActions} from 'vuex'
+
+import img  from '../../common/image/default.png'
 export default {
     components:{
         PlayList,
-        Player
+        // Player
     },
     data () {
         return {
@@ -40,17 +46,30 @@ export default {
         }
     },
     mounted(){
-        console.log(this)
+        console.log(this.getShowPlayer)
         
     },
     computed:{
         ...mapGetters([
             'songName',
             'musicSrc',
-            'imgSrc'
+            'imgSrc',
+            'showPlayer'
         ])
     },
     methods:{
+        ...mapMutations({
+            setShowPlayer: 'setShowPlayer',
+        }),
+        ...mapActions([
+        'getMusicList',
+        'selectPlay',
+        'getShowPlayer'
+        ]),
+        play(){
+            this.getShowPlayer(true)
+           console.log(this.showPlayer)
+        },
         player(){
             const audio = this.$refs.musicAudio
             if(this.isStop==false){
@@ -76,6 +95,10 @@ export default {
                 this.show = false
             }
         },
+        clickOverlay(){
+           this.getShowPlayer(false)
+        }
+        
     }
 }
 </script>
@@ -128,7 +151,6 @@ export default {
     }
     .van-popup--bottom{
         height: 6rem;
-        
         width: 100%;
     }
 </style>

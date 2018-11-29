@@ -10,7 +10,7 @@
     </div>
 </template>
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters,mapMutations} from 'vuex'
 export default {
     data () {
         return {
@@ -18,17 +18,22 @@ export default {
         }
     },
     mounted(){
-        // console.log(this._props)
+        console.log(this.$el.baseURI)
     },
     computed:{
         ...mapGetters([
             'songName',
-            'singer'
+            'singer',
+            'showPlayer'
         ])
     },
     methods:{
+         ...mapMutations({
+            setShowPlayer: 'setShowPlayer',
+        }),
         goBack(){
             this.$router.go(-1)
+            
         }
     }
 }
