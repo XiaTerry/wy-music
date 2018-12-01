@@ -31,7 +31,6 @@ export default {
   },
   mounted(){
     this.audio = this.$children[1].$refs.musicAudio
-    console.log(this.audio)
   }
 }
 </script>

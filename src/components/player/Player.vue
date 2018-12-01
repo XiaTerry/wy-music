@@ -104,8 +104,7 @@ export default {
         
     },
     destroyed () {
-        // console.log(this.$refs)
-        // this.$root.$children[0].isShow = true
+        
     },
     computed:{
         ...mapGetters([
@@ -218,7 +217,6 @@ export default {
             }else{
                 audio.loop = false
             }
-            console.log()
         },
         changeMode(){
             let index = this.nowMode++
@@ -239,8 +237,6 @@ export default {
                 this.mode = 'random'
                 this.playMode(this.mode)
             }
-            
-            console.log(this.mode)
             
         },
         ...mapMutations({
@@ -276,7 +272,6 @@ export default {
             }else{
                 this.isStop = true
             }
-            // console.log(e.target.paused)
         },
     }
 }

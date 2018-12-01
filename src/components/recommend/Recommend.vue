@@ -112,8 +112,13 @@ export default {
        this._getDjprogram()
     },
     mounted(){
-        let nowDtate = new Date() 
-        this.date = nowDtate.getDate()
+        let nowDtate = new Date()
+        if(nowDtate.getDate()<=9){
+            this.date = "0" + nowDtate.getDate()
+        }else{
+            this.date = nowDtate.getDate()
+        }
+        
     },
     methods:{
         //获取推荐页面中轮播图数据
