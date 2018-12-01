@@ -3,9 +3,7 @@
         <!-- 顶部导航 -->
         <van-row type="flex" justify="space-between">
             <van-col span="4" class="header-icon">
-                <router-link to="/user" class="mine" tag="div">
-                    <i class="iconfont icon-caidan"></i>
-                </router-link>
+                    <i class="iconfont icon-caidan" @click="openUser()"></i>
             </van-col>
             <van-col span="2" class="header-icon">
                 <router-link to="/music">
@@ -28,6 +26,11 @@
                 </router-link>
             </van-col>
         </van-row>
+        <v-touch @swipeleft="swipeleft" >
+            <div id="user" v-show="isShow">
+            
+            </div>
+        </v-touch>
         
         
         <!-- 顶部三导航 推荐 朋友 电台 -->
@@ -45,6 +48,20 @@
 export default {
     components:{
         
+    },
+    data () {
+        return {
+            isShow:false,     
+        }
+    },
+    methods:{
+        openUser(){
+            this.isShow = true;
+        },
+        
+        swipeleft(){
+            this.isShow = false;
+        }
     }
 }
 </script>
@@ -52,6 +69,15 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../common/scss/variable.scss";
+#user{
+    position: fixed;
+    width: 75%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #000;
+}
 .v-header {
     position: fixed;
     left: 0;

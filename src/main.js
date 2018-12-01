@@ -13,6 +13,9 @@ import { Loading } from 'vant';
 import Vant from 'vant';
 import 'vant/lib/index.css'
 Vue.use(Vant)
+//使用vue-touch解决移动端滑动问题
+var VueTouch  = require('vue-touch');
+Vue.use(VueTouch, {name: 'v-touch'})
 //使用vuex状态管理池
 // Vue.use(Vuex)
 Vue.use(Loading);
