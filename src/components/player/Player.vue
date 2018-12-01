@@ -49,8 +49,8 @@
         <van-popup v-model="show" position="bottom">
             <PlayList></PlayList>
         </van-popup>
-       
-        <audio  ref="musicAudio" :src="musicSrc"  autoplay="autoplay" class="audio-ctrl" @timeupdate="updateTime"></audio>
+        
+       <audio  ref="musicAudio" :src="musicSrc"  autoplay="autoplay" class="audio-ctrl" @timeupdate="updateTime"></audio>
     </div>
 </template>
 
@@ -64,10 +64,11 @@ export default {
     
     components:{
         PlayerHeader,
-        PlayList
+        PlayList,
     },
     data () {
         return {
+            isShow:true,
             show: false,
             modeList: ['loop','loopList'],
             iconMode: 'icon-liebiaoxunhuan1',
@@ -90,12 +91,11 @@ export default {
         }
     },
     mounted(){
-        this.$root.$children[0].isShow = false
+        
         this.addEventListeners()
-        console.log(this)
     },
     beforeDestroy(){
-        this.$root.$children[0].isShow = true
+        
         this.removeEventListeners()
     },
     created(){
@@ -103,9 +103,9 @@ export default {
         this._getSong()
         
     },
-    destroyed(){
-        // this.removeEventListeners()
-
+    destroyed () {
+        // console.log(this.$refs)
+        // this.$root.$children[0].isShow = true
     },
     computed:{
         ...mapGetters([
@@ -292,15 +292,20 @@ export default {
         }
     }
     #player{
-        margin-top: 1rem;
+        position:fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
         width: 100%;
-        height: 10rem;
+        z-index: 999;
+        background: #000;
+        overflow-y: auto;
         .disc{
             width: 100%;
-            height: 71%;
+            height: 70%;
             background: rgba(0,0,0,0.3);
             position: relative;
-
             .one{
                 margin: auto;
                 width: 4rem;
@@ -352,11 +357,12 @@ export default {
             }
         }
         .player-bar{
+            // z-index: 99;
             position:fixed;
             left: 0;
             right: 0;
             margin-bottom: 0;
-            background: rgba(0,0,0,0.3);
+            background: #000;
             .palyer-msg{
                 height: 1.5rem;
             }

@@ -10,7 +10,7 @@
     </div>
 </template>
 <script>
-import {mapGetters,mapMutations} from 'vuex'
+import {mapGetters,mapMutations,mapActions} from 'vuex'
 export default {
     data () {
         return {
@@ -18,7 +18,7 @@ export default {
         }
     },
     mounted(){
-        console.log(this.$el.baseURI)
+        
     },
     computed:{
         ...mapGetters([
@@ -27,13 +27,20 @@ export default {
             'showPlayer'
         ])
     },
+  
     methods:{
-         ...mapMutations({
+        ...mapMutations({
             setShowPlayer: 'setShowPlayer',
         }),
+        ...mapActions([
+        'getShowPlayer'
+        ]),
         goBack(){
-            this.$router.go(-1)
-            
+            if(this.showPlayer===true){
+                 this.getShowPlayer(false)
+            }else{
+                this.$router.go(-1)
+            }
         }
     }
 }
@@ -49,7 +56,7 @@ export default {
         right: 0;
         top: 0;
         z-index: 1;
-        background: rgba(0,0,0,0.3);
+        background: #000;
         box-sizing: border-box;
         color: #fef;
         h4{

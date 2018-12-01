@@ -2,7 +2,7 @@
 <div>
     <div class="player-bar">
         <div class="song-describe" @click="play()">
-            <img v-lazy="imgSrc" >
+            <img :src="imgSrc" >
             <div class="song-title">
                 <p>
                 {{songName}}
@@ -18,9 +18,6 @@
     <van-popup v-model="show" position="bottom" >
         <PlayList></PlayList>
     </van-popup>
-    <van-popup v-model="showPlayer"  position="bottom" @click-overlay="clickOverlay">
-        
-    </van-popup>
 
 </div>
 </template>
@@ -29,12 +26,12 @@
 import PlayList from '../playlist/Playlist.vue'
 import Player from '../player/Player.vue'
 import {mapGetters,mapMutations,mapActions} from 'vuex'
-
 import img  from '../../common/image/default.png'
 export default {
+    props:['Audio'],
     components:{
         PlayList,
-        // Player
+        Player
     },
     data () {
         return {
@@ -46,13 +43,12 @@ export default {
         }
     },
     mounted(){
-        console.log()
-        
+       
+       
     },
     computed:{
         ...mapGetters([
             'songName',
-            'musicSrc',
             'imgSrc',
             'showPlayer'
         ])
@@ -68,10 +64,10 @@ export default {
         ]),
         play(){
             this.getShowPlayer(true)
-        //    console.log(this.showPlayer)
+           
         },
         player(){
-            const audio = this.$refs.musicAudio
+            const audio = this.Audio
             if(this.isStop==false){
                 this.isPlayer = false;
                 this.isStop = true;
@@ -97,7 +93,8 @@ export default {
         },
         clickOverlay(){
            this.getShowPlayer(false)
-        }
+        },
+        
         
     }
 }

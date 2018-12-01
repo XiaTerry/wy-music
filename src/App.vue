@@ -1,28 +1,37 @@
 <template>
   <div id="app">
       <router-view/>
-      <!-- <Player v-show="isPlayer"></Player> -->
-      <PlayerBar ref="player" v-show="isShow"></PlayerBar>
+      
+      
+      <Player v-show="showPlayer"></Player>
+      <PlayerBar :Audio="audio" v-show="isShow" ></PlayerBar>
   </div>
   
 </template>
 <script>
 import "../src/common/scss/reset.scss"
 import PlayerBar from "../src/components/player/PlayerBar.vue"
-// import Player from "../src/components/player/Player.vue"
+import Player from "../src/components/player/Player.vue"
+import {mapGetters, mapMutations, mapActions} from 'vuex'
 export default {
   components:{
     PlayerBar,
-    // Player
+    Player
   },
   data () {
     return {
       isShow:true,
-      isPlayer:false
+      audio:null
     }
   },
+  computed:{
+    ...mapGetters([
+      'showPlayer'
+    ])
+  },
   mounted(){
-    
+    this.audio = this.$children[1].$refs.musicAudio
+    console.log(this.audio)
   }
 }
 </script>
