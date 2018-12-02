@@ -27,8 +27,25 @@
             </van-col>
         </van-row>
         <v-touch @swipeleft="swipeleft" >
-            <div id="user" v-show="isShow">
-            
+            <div class="user" v-show="isShow" @click="btn()">
+                <div class="user-title">
+                    <img src="" alt="">
+                    <h3>转角171015</h3>
+                </div>
+                <div class="user-content">
+                    <ul>
+                        <li v-for="(item,index) in user" :key="index">
+                            <i></i>{{item}}
+                        </li>
+                    </ul>
+                </div>
+                <div class="user-bar">
+                    <ul>
+                        <li>夜间模式</li>
+                        <li>设置</li>
+                        <li>退出</li>
+                    </ul>
+                </div>
             </div>
         </v-touch>
         
@@ -51,7 +68,10 @@ export default {
     },
     data () {
         return {
-            isShow:false,     
+            isShow:false,
+            user:['我的消息','会员中心','商城','游戏推荐','在线听歌免流量'
+            ,'我的好友','附近的人','个性换肤','听歌识曲','定时停止播放','扫一扫',
+            '音乐闹钟','驾驶模式','亲子频道','小冰电台','音乐云盘','优惠券','加入网易音乐人']     
         }
     },
     methods:{
@@ -61,6 +81,11 @@ export default {
         
         swipeleft(){
             this.isShow = false;
+            
+        },
+        btn(){
+            this.isShow = false;
+            console.log(123)
         }
     }
 }
@@ -69,14 +94,55 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../common/scss/variable.scss";
-#user{
+.user{
+    overflow-y: scroll;
     position: fixed;
     width: 75%;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    background: #000;
+    background: #fff;
+    &-title{
+        height: 2.5rem;
+        width: 100%;
+        background: #eee;
+        h3{
+            text-align: left;
+            padding: 0.2rem;
+        }
+    }
+    &-content{
+        background: #eee;
+        ul{
+            background: #fff;
+        }
+        li{
+            
+            text-align: left;
+            padding: 0.2rem;
+        }
+        li:last-child{
+            margin-bottom: 1rem;
+        }
+        
+    }
+    &-bar{
+        border-top: 1px solid #eee;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #fff;
+        height: 1rem;
+        width: 75%;
+        li{
+            height: 1rem;
+            float: left;
+            line-height: 1rem;
+            width: 33%;
+        }
+    }
 }
 .v-header {
     position: fixed;

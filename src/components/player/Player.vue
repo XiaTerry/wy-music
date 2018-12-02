@@ -2,19 +2,22 @@
     <div id="player" >
         <PlayerHeader></PlayerHeader>
         
-        <div class="disc" >
-           <transition>
-            <div class="one" ref="disc">
-                <div class="two">
-                    <div class="three">
-                        <div class="four">
-                            <img :src="imgSrc">
+            <div class="disc" >
+            <v-touch @swipeleft="swipeleft" @swiperight="swiperight">
+            <transition>
+                <div class="one" ref="disc">
+                    <div class="two">
+                        <div class="three">
+                            <div class="four">
+                                <img :src="imgSrc">
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             </transition>
+            </v-touch>
         </div>
+        
         <div class="player-bar">
             <van-row class="palyer-msg" type="flex" justify="center">
                 <van-col span="5"><i class="iconfont icon-heart"></i></van-col>
@@ -183,6 +186,12 @@ export default {
                 index = this.musicList.length-1
             }
            this.setSongs(index)
+        },
+        swipeleft(){
+            this.next();
+        },
+        swiperight(){
+            this.prev();
         },
         //点击下一曲
         next(){
