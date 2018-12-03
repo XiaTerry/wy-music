@@ -51,10 +51,10 @@
         
         
         <!-- 顶部三导航 推荐 朋友 电台 -->
-        <van-row class="title" type="flex" justify="space-around">
-            <van-col span="6"><router-link to="/">推荐</router-link></van-col>
-            <van-col span="6"><router-link to="/friend">朋友</router-link></van-col>
-            <van-col span="6"><router-link to="/radio">电台</router-link></van-col>
+        <van-row class="title" type="flex" justify="space-around" ref="nav">
+            <van-col span="6"><router-link to="/">推荐<div class="bar"></div></router-link></van-col>
+            <van-col span="6"><router-link to="/friend">朋友<div class="bar"></div></router-link></van-col>
+            <van-col span="6"><router-link to="/radio">电台<div class="bar"></div></router-link></van-col>
         </van-row>
     </div>
 </template>
@@ -73,6 +73,10 @@ export default {
             ,'我的好友','附近的人','个性换肤','听歌识曲','定时停止播放','扫一扫',
             '音乐闹钟','驾驶模式','亲子频道','小冰电台','音乐云盘','优惠券','加入网易音乐人']     
         }
+    },
+    mounted(){
+        console.log(this.$refs.nav)
+        
     },
     methods:{
         openUser(){
@@ -94,6 +98,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../common/scss/variable.scss";
+
 .user{
     overflow-y: scroll;
     position: fixed;
@@ -175,7 +180,12 @@ export default {
         color: #ffffffa8;
         font-size: $font-size-medium-x;
     }
-    
+    .bar{
+        height: 0.05rem;
+        width: 0.6rem;
+        margin: 0.1rem auto;
+        background: #fff;
+    }
 }
 .mine {
     position: absolute;
