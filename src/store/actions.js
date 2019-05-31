@@ -1,12 +1,11 @@
-import * as types from './mutations-type'
-// import { playMode } from '../common/js/config';
-// import { shuffle } from '../common/js/utl';
-export const selectPlay = function({commit},index){
-    commit(types.SET_CURRENT_INDEX,index)
-}
-export const getMusicList= function({commit},list){
-    commit(types.SET_MUSIC_LIST,list)
-}
-export const getShowPlayer = function({commit},showPlayer){
-    commit(types.GET_SHOW_PLAYER,showPlayer)
-}
+import * as types from './mutations-type';
+
+export const selectPlay = function ({ commit }, index) {
+  commit(types.SET_CURRENT_INDEX, index);
+};
+export const getMusicList = function ({ commit }, list) {
+  commit(types.SET_MUSIC_LIST, list);
+};
+export const getShowPlayer = function ({ commit }, showPlayer) {
+  commit(types.GET_SHOW_PLAYER, showPlayer);
+};

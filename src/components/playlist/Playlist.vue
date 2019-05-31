@@ -1,79 +1,73 @@
 <template>
-        <ul class="song-list">
-        <li>
-            <div class="name">   
-                <p>列表循环({{length}})</p>
-            </div>
-            <div class="operation">
-                <p>收藏全部</p>
-            </div>
-        </li>
-        <li v-for="item in musicList" :key="item.id">
-            <div class="name">
-                <p>{{item.name}}</p>-
-                <span>{{item.ar[0].name}}</span>
-            </div>
-            <div class="operation">
-                <i class="iconfont icon-close"></i>
-            </div>
-        </li>
-    </ul>
-   
+  <ul class="song-list">
+    <li>
+      <div class="name">
+        <p>列表循环({{length}})</p>
+      </div>
+      <div class="operation">
+        <p>收藏全部</p>
+      </div>
+    </li>
+    <li v-for="item in musicList" :key="item.id">
+      <div class="name">
+        <p>{{item.name}}</p>-
+        <span>{{item.ar[0].name}}</span>
+      </div>
+      <div class="operation">
+        <i class="iconfont icon-close"></i>
+      </div>
+    </li>
+  </ul>
 </template>
 
 <script>
-import {mapGetters, mapMutations, mapActions} from 'vuex'
+import { mapGetters } from 'vuex';
+
 export default {
-    data () {
-        return {
-            length:0
-        }
-    },
-    mounted(){
-        this.length=this.musicList.length
-    },
-    computed:{
-        ...mapGetters([
-            'musicList'
-        ])
-    }
-}
+  data() {
+    return {
+      length: 0,
+    };
+  },
+  mounted() {
+    this.length = this.musicList.length;
+  },
+  computed: {
+    ...mapGetters(['musicList']),
+  },
+};
 </script>
 
 
 <style lang="scss" scoped>
-    .song-list{
-        
-        li{
-            width: 100%;
-            height: 1rem;
-            box-sizing:border-box;
-            padding:0.2rem;
-            border-bottom:1px solid #eee;
-            
-        }
-        .name{
-            float: left;
-            width: 80%;
-            line-height: 0.6rem;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            p{
-                float: left;
-                font-size: 16px;
-                color: #000;
-                
-            }
-            span{
-                font-size: 12px;
-
-            }
-        }
-        .operation{
-            float:right;
-            // color: #000;
-            line-height: 0.6rem;
-        }
+.song-list {
+  li {
+    width: 100%;
+    height: 1rem;
+    box-sizing: border-box;
+    padding: 0.2rem;
+    border-bottom: 1px solid #eee;
+  }
+  .name {
+    float: left;
+    width: 80%;
+    line-height: 0.6rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    p {
+      float: left;
+      font-size: 16px;
+      color: #000;
     }
+    span {
+      font-size: 12px;
+    }
+  }
+  .operation {
+    float: right;
+    // color: #000;
+    line-height: 0.6rem;
+  }
+}
 </style>

@@ -1,50 +1,47 @@
 <template>
   <div id="app">
-      <router-view/>
-      
-      
-      <Player v-show="showPlayer"></Player>
-      <PlayerBar :Audio="audio" v-show="isShow" ></PlayerBar>
+    <router-view>
+      <!-- <Player v-show="showPlayer"></Player> -->
+    </router-view>
+    <PlayerBar :Audio="audio" v-show="isShow"></PlayerBar>
   </div>
-  
 </template>
+
 <script>
-import "../src/common/scss/reset.scss"
-import PlayerBar from "../src/components/player/PlayerBar.vue"
-import Player from "../src/components/player/Player.vue"
-import {mapGetters, mapMutations, mapActions} from 'vuex'
+import './common/scss/reset.scss';
+import { mapGetters } from 'vuex';
+import PlayerBar from './components/player/PlayerBar.vue';
+// import Player from './components/player/Player.vue';
+
 export default {
-  components:{
+  components: {
     PlayerBar,
-    Player
+    // Player,
   },
-  data () {
+  data() {
     return {
-      isShow:true,
-      audio:null
-    }
+      isShow: true,
+      audio: null,
+    };
   },
-  computed:{
-    ...mapGetters([
-      'showPlayer'
-    ])
+  computed: {
+    ...mapGetters(['showPlayer']),
   },
-  mounted(){
-    this.audio = this.$children[1].$refs.musicAudio
-  }
-}
+  mounted() {
+    this.audio = this.$children[1].$refs.musicAudio;
+  },
+};
 </script>
 <style lang="scss" scoped>
-$background:red;
-html{
+$background: red;
+html {
   font-size: 16px !important;
 }
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
 }
-
 </style>
