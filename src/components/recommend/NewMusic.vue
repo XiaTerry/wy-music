@@ -1,31 +1,35 @@
 <template>
-  <van-row class="recommend-music">
+  <van-row class="recommend-music" style="padding: 1%;">
     <h2>
       最新音乐
       <i class="iconfont icon-fanhui1"></i>
     </h2>
-    <ul>
-      <li class="list-song" v-for="item in newList" :key="item.id">
-        <div class="img">
-          <div class="gradients"></div>
-          <img v-lazy="img">
-        </div>
-        <div class="text">
-          <p class="name">{{item.name}}</p>
-        </div>
-      </li>
-    </ul>
+
+    <div v-for="item in newList" :key="item.id">
+      <my-card :showPlayCount="false" :textDesc="item.name"></my-card>
+    </div>
   </van-row>
 </template>
 
 <script>
 import { getRecommendMusic } from '../../api/recommend';
 import { ERR_OK } from '../../common/js/config';
+import MyCard from '../com-components/MyCard.vue';
 
 export default {
+  components: {
+    MyCard,
+  },
   data() {
     return {
       newList: [],
+      res: {
+        picUrl:
+          'http://p2.music.126.net/eZidSYwW1c8S7IDQjKRgBg==/109951163653489761.jpg',
+        names: '束缚而返回随浮华第三',
+        playCount: 43894893,
+        name: '烦得很死肥卧佛范德萨范德萨范德萨发佛挡杀佛范发',
+      },
       img:
         'http://p2.music.126.net/eZidSYwW1c8S7IDQjKRgBg==/109951163653489761.jpg',
     };
@@ -64,46 +68,6 @@ $con: "06";
     color: #000;
     .iconfont {
       font-size: 18px;
-    }
-  }
-  .list-song {
-    width: 33%;
-    box-sizing: border-box;
-    float: left;
-    padding: 0 1%;
-    .img {
-      position: relative;
-      display: inline-block;
-      height: 2rem;
-      width: 100%;
-    }
-    img {
-      height: 2rem;
-      border-radius: 0.1rem;
-      position: relative;
-    }
-    .play-count {
-      width: 100%;
-      height: 0.3rem;
-      background: rgba(0, 0, 0, 0.1);
-      border-radius: 0.1rem 0.1rem 0 0;
-      top: 0;
-      color: $color-text-l;
-      padding: 0.1rem 0;
-      text-align: right;
-      position: absolute;
-      .iconfont {
-        color: $color-text-l;
-      }
-    }
-    .text {
-      width: 2rem;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      padding: 0.1rem 0;
-      text-align: left;
-      color: #000;
-      height: 1rem;
     }
   }
 }

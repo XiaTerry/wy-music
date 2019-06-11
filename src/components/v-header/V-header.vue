@@ -1,9 +1,11 @@
 <template>
-  <div class="v-header">
+  <van-row class="v-header">
     <!-- 顶部导航 -->
     <van-row type="flex" justify="space-between">
       <van-col span="4" class="header-icon">
-        <i class="iconfont icon-caidan" @click="openUser()"></i>
+        <router-link to="/userInfo">
+          <i class="iconfont icon-caidan" @click="changeShowUser"></i>
+        </router-link>
       </van-col>
       <van-col span="2" class="header-icon">
         <router-link to="/music">
@@ -26,94 +28,60 @@
         </router-link>
       </van-col>
     </van-row>
-    <v-touch @swipeleft="swipeleft">
-      <div class="user" v-show="isShow" @click="btn()">
-        <div class="user-title">
-          <img src alt>
-          <h3>转角171015</h3>
-        </div>
-        <div class="user-content">
-          <ul>
-            <li v-for="(item,index) in user" :key="index">
-              <i></i>
-              {{item}}
-            </li>
-          </ul>
-        </div>
-        <div class="user-bar">
-          <ul>
-            <li>夜间模式</li>
-            <li>设置</li>
-            <li>退出</li>
-          </ul>
-        </div>
-      </div>
-    </v-touch>
 
     <!-- 顶部三导航 推荐 朋友 电台 -->
-    <van-row class="title" type="flex" justify="space-around" ref="nav">
-      <van-col span="6">
-        <router-link to="/">
-          推荐
-          <div class="bar"></div>
-        </router-link>
-      </van-col>
-      <van-col span="6">
-        <router-link to="/friend">
-          朋友
-          <div class="bar"></div>
-        </router-link>
-      </van-col>
-      <van-col span="6">
-        <router-link to="/radio">
-          电台
-          <div class="bar"></div>
-        </router-link>
-      </van-col>
-    </van-row>
-  </div>
+    <van-tabs
+      v-model="tabActive"
+      background="#E3150D"
+      color="#fff"
+      title-inactive-color="#ffffffa8"
+      title-active-color="#fff"
+      @click="onClick"
+    >
+      <van-tab title="推荐"></van-tab>
+      <van-tab title="朋友"></van-tab>
+      <van-tab title="电台"></van-tab>
+    </van-tabs>
+  </van-row>
 </template>
 
 
 <script>
+import { mapMutations, mapActions } from 'vuex';
+
 export default {
   components: {},
   data() {
     return {
-      isShow: false,
-      user: [
-        '我的消息',
-        '会员中心',
-        '商城',
-        '游戏推荐',
-        '在线听歌免流量',
-        '我的好友',
-        '附近的人',
-        '个性换肤',
-        '听歌识曲',
-        '定时停止播放',
-        '扫一扫',
-        '音乐闹钟',
-        '驾驶模式',
-        '亲子频道',
-        '小冰电台',
-        '音乐云盘',
-        '优惠券',
-        '加入网易音乐人',
-      ],
+      active: 0,
+      routerMap: {
+        0: '/',
+        1: '/friend',
+        2: '/radio',
+      },
     };
   },
-  mounted() {},
-  methods: {
-    openUser() {
-      this.isShow = true;
-    },
 
-    swipeleft() {
-      this.isShow = false;
+  computed: {
+    tabActive: {
+      get() {
+        return this.$store.getters.tabActive;
+      },
+      set(val) {
+        return this.$store.commit('CHANGE_TAB', val);
+      },
     },
-    btn() {
-      this.isShow = false;
+  },
+
+  methods: {
+    ...mapMutations(['CHANGE_SHOW_USER', 'CHANGE_TAB']),
+
+    ...mapActions(['changeShowUser', 'changeTabActive']),
+
+    onClick(index) {
+      this.$router.push({
+        path: `${this.routerMap[index]}`,
+      });
     },
   },
 };
@@ -122,54 +90,8 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../common/scss/variable.scss";
-
-.user {
-  overflow-y: scroll;
-  position: fixed;
-  width: 75%;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #fff;
-  &-title {
-    height: 2.5rem;
-    width: 100%;
-    background: #eee;
-    h3 {
-      text-align: left;
-      padding: 0.2rem;
-    }
-  }
-  &-content {
-    background: #eee;
-    ul {
-      background: #fff;
-    }
-    li {
-      text-align: left;
-      padding: 0.2rem;
-    }
-    li:last-child {
-      margin-bottom: 1rem;
-    }
-  }
-  &-bar {
-    border-top: 1px solid #eee;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #fff;
-    height: 1rem;
-    width: 75%;
-    li {
-      height: 1rem;
-      float: left;
-      line-height: 1rem;
-      width: 33%;
-    }
-  }
+.van-hairline--top-bottom::after {
+  border-width: 0 !important;
 }
 .v-header {
   position: fixed;
@@ -180,6 +102,7 @@ export default {
   z-index: 1;
   text-align: center;
   background: $color-theme;
+  margin-bottom: 1.8rem;
   .text {
     line-height: 44px;
     font-weight: bold;
@@ -191,22 +114,6 @@ export default {
     .iconfont {
       color: #ffffffa8;
       font-size: 0.5rem;
-    }
-  }
-  .title {
-    padding: 0.2rem;
-    margin-top: 0.2rem;
-    a {
-      width: 0.4rem;
-      height: 0.4rem;
-      color: #ffffffa8;
-      font-size: $font-size-medium-x;
-    }
-    .bar {
-      height: 0.05rem;
-      width: 0.6rem;
-      margin: 0.1rem auto;
-      background: #fff;
     }
   }
   .mine {

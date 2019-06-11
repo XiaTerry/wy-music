@@ -54,9 +54,11 @@ export default {
         'http://p1.music.126.net/DCyf-5chgGn1gX3DYRiXEQ==/109951163651258067.jpg',
     };
   },
+
   created() {
     this.getRecommendList();
   },
+
   methods: {
     selectSong(id) {
       this.$router.push({

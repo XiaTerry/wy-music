@@ -1,29 +1,54 @@
+/**
+ * 将播放列表赋值给state.musicList
+ */
 export const SET_MUSIC_LIST = 'SET_MUSIC_LIST';
 
-export const SET_SINGER = 'SET_SINGER';
+/**
+ * 设置当前播放的nowIndex
+ */
+export const SET_NOW_INDEX = 'SET_NOW_INDEX';
 
-export const SET_PLAYING_STATE = 'SET_PLAYING_STATE';
+/**
+ * 设置当前歌曲currentSongId
+ */
+export const SET_CURRENT_SONG_ID = 'SET_CURRENT_SONG_ID';
 
-export const SET_FULL_SCREEN = 'SET_FULL_SCREEN';
+/**
+ * 设置当前歌曲
+ */
+export const SET_CURRENT_SONG = 'SET_CURRENT_SONG';
 
-export const SET_PLAYLIST = 'SET_PLAYLIST';
+/**
+ * 改变当前索引nowIndex
+ */
+export const CHANGE_NOW_INDEX = 'CHANGE_NOW_INDEX';
 
-export const SET_SEQUENCE_LIST = 'SET_SEQUENCE_LIST';
+/**
+ * 设置播放组件的开关
+ */
+export const SET_PLAYER_VISIBLE = 'SET_PLAYER_VISIBLE';
 
-export const SET_PLAY_MODE = 'SET_PLAY_MODE';
+/**
+ * 改变播放状态
+ */
+export const CHANGE_IS_PLAY = 'CHANGE_IS_PLAY';
 
-export const SET_CURRENT_INDEX = 'SET_CURRENT_INDEX';
+/**
+ * 改变用户信息状态
+ */
+export const CHANGE_SHOW_USER = 'CHANGE_SHOW_USER';
 
-export const SET_DISC = 'SET_DISC';
+/**
+ * 设置登录转态
+ */
+export const SET_LOGIN_STATUS = 'SET_LOGIN_STATUS';
 
-export const SET_TOP_LIST = 'SET_TOP_LIST';
+/**
+ * 设置用户profile
+ */
+export const SET_PORFILE = 'SET_PORFILE';
 
-export const SET_SEARCH_HISTORY = 'SET_SEARCH_HISTORY';
-
-export const SET_PLAY_HISTORY = 'SET_PLAY_HISTORY';
-
-export const SET_FAVORITE_LIST = 'SET_FAVORITE_LIST';
-
-export const SET_CURRENT_ID = 'SET_CURRENT_ID';
-
-export const GET_SHOW_PLAYER = 'GET_SHOW_PLAYER';
+/**
+ * 切换tab页
+ */
+export const CHANGE_TAB = 'CHANGE_TAB';

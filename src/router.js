@@ -50,29 +50,68 @@ export default new Router({
             },
           ],
         },
+
+        {
+          path: '/rankingList',
+          component: () => import('./components/rank-detail/index.vue'),
+          children: [
+            {
+              path: '',
+              name: 'rankingList',
+              component: () => import('./components/rank-detail/RankingList.vue'),
+            },
+          ],
+        },
+
+        {
+          path: '/userInfo',
+          component: () => import('./components/user/index.vue'),
+          children: [
+            {
+              path: '',
+              name: 'userInfo',
+              component: () => import('./components/user/UserCenter.vue'),
+            },
+          ],
+        },
+
+        {
+          path: '/search',
+          component: () => import('./components/search/index.vue'),
+          children: [
+            {
+              path: '',
+              name: 'search',
+
+              component: () => import('./components/search/Search.vue'),
+            },
+          ],
+        },
+
+        {
+          path: '/radio',
+          component: () => import('./components/radio/index.vue'),
+          children: [
+            {
+              path: '',
+              name: 'radio',
+              component: () => import('./components/radio/Radio.vue'),
+            },
+          ],
+        },
+
+        {
+          path: '/friend',
+          component: () => import('./components/friend/index.vue'),
+          children: [
+            {
+              path: '',
+              name: 'friend',
+              component: () => import('./components/friend/Friend.vue'),
+            },
+          ],
+        },
       ],
-    },
-
-    {
-      path: '/search',
-      name: 'search',
-      component: () => import('./components/search/Search.vue'),
-    },
-    {
-      path: '/radio',
-      name: 'radio',
-      component: () => import('./components/radio/Radio.vue'),
-    },
-    {
-      path: '/friend',
-      name: 'friend',
-      component: () => import('./components/friend/Friend.vue'),
-    },
-
-    {
-      path: '/rankingList',
-      name: 'rankingList',
-      component: () => import('./components/rank-detail/RankingList.vue'),
     },
 
     {

@@ -44,7 +44,7 @@ export default {
       const nowDtate = new Date();
 
       if (nowDtate.getDate() <= 9) {
-        this.date = nowDtate.getDate();
+        this.date = `0${nowDtate.getDate()}`;
       } else {
         this.date = nowDtate.getDate();
       }

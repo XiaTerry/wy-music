@@ -3,11 +3,13 @@
 const state = {
   musicList: [],
   nowIndex: -1,
-  currentSongId: '',
-  songName: '',
-  singer: '',
-  musicSrc: '',
-  imgSrc: '',
-  showPlayer: false,
+  currentSongId: undefined,
+  currentSong: {},
+  playerVisible: false,
+  isPlay: true,
+  isShowUser: false,
+  loginStatus: false,
+  profile: {},
+  tabActive: 0,
 };
 export default state;

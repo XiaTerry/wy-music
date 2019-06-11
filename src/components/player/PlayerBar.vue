@@ -1,22 +1,22 @@
 <template>
-  <div>
-    <div class="player-bar">
-      <div class="song-describe" @click="play()">
-        <img :src="imgSrc">
+  <van-row>
+    <van-row class="player-bar" v-if="!isShowUser">
+      <div class="song-describe" @click="showPlayer">
+        <img :src="currentSong.imgSrc">
         <div class="song-title">
-          <p>{{songName}}</p>
+          <p>{{currentSong.songName}}</p>
         </div>
       </div>
       <div class="icon">
-        <i class="iconfont icon-play" v-show="isPlayer" @click="player"></i>
-        <i class="iconfont icon-stop" v-show="isStop" @click="player"></i>
+        <i class="iconfont icon-play" v-show="!isPlay" @click="chageIsPlay"></i>
+        <i class="iconfont icon-stop" v-show="isPlay" @click="chageIsPlay"></i>
         <i class="iconfont icon-caidan" @click="popup()"></i>
       </div>
-    </div>
+    </van-row>
     <van-popup v-model="show" position="bottom">
       <PlayList></PlayList>
     </van-popup>
-  </div>
+  </van-row>
 </template>
 
 <script>
@@ -32,42 +32,21 @@ export default {
   data() {
     return {
       isPlayer: false,
-      isStop: true,
       show: false,
       isShow: false,
       img:
         'http://p1.music.126.net/eZidSYwW1c8S7IDQjKRgBg==/109951163653489761.jpg',
     };
   },
-  mounted() {},
+
   computed: {
-    ...mapGetters(['songName', 'imgSrc', 'showPlayer']),
+    ...mapGetters(['currentSong', 'isPlay', 'isShowUser']),
   },
   methods: {
-    ...mapMutations({
-      setShowPlayer: 'setShowPlayer',
-    }),
-    ...mapActions(['getMusicList', 'selectPlay', 'getShowPlayer']),
-    play() {
-      this.getShowPlayer(true);
+    showPlayer() {
+      this.chagePlayerVisible(true);
     },
-    player() {
-      const audio = this.Audio;
-      if (this.isStop === false) {
-        this.isPlayer = false;
-        this.isStop = true;
-        audio.play();
-      } else {
-        this.isStop = false;
-        this.isPlayer = true;
-        audio.pause();
-      }
-    },
-    toPlayer() {
-      this.$router.push({
-        path: '/player',
-      });
-    },
+
     popup() {
       if (this.show === false) {
         this.show = true;
@@ -75,9 +54,10 @@ export default {
         this.show = false;
       }
     },
-    clickOverlay() {
-      this.getShowPlayer(false);
-    },
+
+    ...mapMutations(['SET_PLAYER_VISIBLE', 'CHANGE_IS_PLAY']),
+
+    ...mapActions(['chagePlayerVisible', 'chageIsPlay']),
   },
 };
 </script>
@@ -94,6 +74,7 @@ export default {
   bottom: 0;
   height: 1rem;
   background: #fff;
+
   .song-describe {
     width: 65%;
     float: left;

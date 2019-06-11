@@ -1,8 +1,10 @@
 export const nowIndex = state => state.nowIndex;
 export const musicList = state => state.musicList;
 export const currentSongId = state => state.currentSongId;
-export const songName = state => state.songName;
-export const singer = state => state.singer;
-export const musicSrc = state => state.musicSrc;
-export const imgSrc = state => state.imgSrc;
-export const showPlayer = state => state.showPlayer;
+export const currentSong = state => state.currentSong;
+export const playerVisible = state => state.playerVisible;
+export const isPlay = state => state.isPlay;
+export const isShowUser = state => state.isShowUser;
+export const loginStatus = state => state.loginStatus;
+export const profile = state => state.profile;
+export const tabActive = state => state.tabActive;

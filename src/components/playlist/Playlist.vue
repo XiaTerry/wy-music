@@ -2,16 +2,16 @@
   <ul class="song-list">
     <li>
       <div class="name">
-        <p>列表循环({{length}})</p>
+        <h4>列表循环({{musicList.length}})</h4>
       </div>
       <div class="operation">
-        <p>收藏全部</p>
+        <h5>收藏全部</h5>
       </div>
     </li>
     <li v-for="item in musicList" :key="item.id">
       <div class="name">
         <p>{{item.name}}</p>-
-        <span>{{item.ar[0].name}}</span>
+        <span>{{item.author}}</span>
       </div>
       <div class="operation">
         <i class="iconfont icon-close"></i>
@@ -21,19 +21,25 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapMutations, mapActions } from 'vuex';
 
 export default {
-  data() {
-    return {
-      length: 0,
-    };
-  },
-  mounted() {
-    this.length = this.musicList.length;
-  },
   computed: {
-    ...mapGetters(['musicList']),
+    musicList() {
+      const myStorge = window.localStorage;
+      const list = this.$store.getters.musicList;
+      if (list.length === 0) {
+        const lists = JSON.parse(myStorge.getItem('musicList'));
+        this.setMusicList(lists);
+      }
+      return this.$store.getters.musicList;
+    },
+  },
+
+  methods: {
+    ...mapMutations(['SET_MUSIC_LIST']),
+
+    ...mapActions(['setMusicList']),
   },
 };
 </script>
@@ -49,8 +55,9 @@ export default {
     border-bottom: 1px solid #eee;
   }
   .name {
+    text-align: left;
     float: left;
-    width: 80%;
+    width: 75%;
     line-height: 0.6rem;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -65,8 +72,8 @@ export default {
     }
   }
   .operation {
+    text-align: left;
     float: right;
-    // color: #000;
     line-height: 0.6rem;
   }
 }

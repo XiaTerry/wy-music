@@ -1,10 +1,10 @@
 module.exports = {
-  baseUrl: process.env.NODE_ENV === 'production' ? '//your_url' : '/',
+  baseUrl: process.env.NODE_ENV === 'production' ? '/' : '/',
 
   devServer: {
     open: true,
-    host: 'localhost',
-    port: 8080,
+    // host: 'localhost',
+    // port: 8080,
   },
   lintOnSave: false,
 };

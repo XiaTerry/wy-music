@@ -1,5 +1,5 @@
 <template>
-  <keep-alive include="Recommend,SongList,ListDetail,rankingList">
+  <keep-alive include="Recommend">
     <router-view></router-view>
   </keep-alive>
 </template>
